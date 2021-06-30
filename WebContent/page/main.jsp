@@ -17,10 +17,10 @@
 	<jsp:include page="header.jsp"></jsp:include>
     <div id="mainTop">
         <div id="promotionImgFm">
-            <img class="promotionImg" src="http://placehold.it/280x280" alt="" width="280" height="280">
-            <img class="promotionImg" src="http://placehold.it/280x280" alt="" width="280" height="280">
-            <img class="promotionImg" src="http://placehold.it/280x280" alt="" width="280" height="280">
-            <img class="promotionImg" src="http://placehold.it/280x280" alt="" width="280" height="280">
+            <img class="promotionImg" src="../resources/images/promotion/promotionImage_summer_holidays.png" alt="" width="280" height="280">
+            <img class="promotionImg" src="../resources/images/promotion/promotionImage_partners.png" alt="" width="280" height="280">
+            <img class="promotionImg" src="../resources/images/promotion/promotionImage_breakfast.png" alt="" width="280" height="280">
+            <img class="promotionImg" src="../resources/images/promotion/promotionImage_work_at_hotel.png" alt="" width="280" height="280">
         </div>
     </div>
     <div id="mainBottom">
