@@ -1,0 +1,45 @@
+@charset "UTF-8";
+
+/* 메인 상단 : 프로모션 이미지 */
+
+#mainTop { 
+	width: 100%; 
+}
+
+#promotionImgFm { 
+	width: 1180px; 
+	margin: 0 auto; 
+	text-align: center; 
+}
+
+.promotionImg { 
+	margin: 100px 0; 
+	cursor: pointer; 
+}
+
+/* 메인 하단 : 객실 조회 */
+
+#mainBottom { 
+	width: 100%; 
+}
+
+#reservationFm { 
+	background: #dfe4ec; 
+	width: 1140px; 
+	height: 100px; 
+	margin: 0 auto; 
+}
+
+#reservationFm table { 
+	width: 1000px; 
+	margin: 0 auto; 
+	border-spacing: 15px; 
+}
+
+#reservationFm table tr { 
+	padding: 20px; 
+}
+
+#searchBtn { 
+	margin-left: 20px; 
+}
