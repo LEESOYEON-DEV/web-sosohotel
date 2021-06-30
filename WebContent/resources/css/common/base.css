@@ -1,0 +1,50 @@
+@charset "UTF-8";
+
+* { 
+	margin: 0; 
+	padding: 0; 
+}
+
+html { 
+	position: relative; 
+	min-height: 100%; 
+}
+
+a { 
+	text-decoration: none; 
+}
+
+h1, h2, h3, h4, h5, h6, hr, a, div { 
+	color: #646e78; 
+}
+
+ul { 
+	list-style-type: none; 
+}
+
+input { 
+	height: 30px; 
+	text-align: center; 
+}
+
+button { 
+	background: #646e78; 
+	width: 100px; 
+	height: 60px; 
+	border: none; 
+	border-radius: 7px; 
+	color: #ffffff; 
+	font-weight: bold; 
+	font-size: 15px; 
+	cursor: pointer; 
+}
+
+#title { 
+	width: 1180px; 
+	margin: 50px auto; 
+}
+
+#title h2 { 
+	margin-bottom: 5px; 
+	margin-left: 10px; 
+}

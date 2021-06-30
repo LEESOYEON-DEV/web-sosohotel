@@ -1,0 +1,22 @@
+@charset "UTF-8";
+
+#header { 
+	width: 100%; 
+}
+
+#headerBox { 
+	width: 1160px; 
+	margin: 0 auto; 
+}
+
+#loginArea { 
+	margin-top: 10px; 
+	text-align: right; 
+	font-size: 13px; 
+}
+	
+#logoArea { 
+	margin: 20px 0; 
+	text-align: left; 
+	font-size: 30px; 
+}

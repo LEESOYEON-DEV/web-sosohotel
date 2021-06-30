@@ -1,0 +1,15 @@
+@charset "UTF-8";
+
+#footer { 
+	background-color: #d4d6d6; 
+	width: 100%; 
+	position: absolute; 
+	bottom: 0; 
+}
+
+#footerBox { 
+	width: 1160px; 
+	margin: 30px auto; 
+	text-align: center; 
+	font-size: 13px; 
+}

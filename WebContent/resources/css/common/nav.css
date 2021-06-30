@@ -1,0 +1,49 @@
+@charset "UTF-8";
+
+#nav { 
+	background: #646e78; 
+	width: 100%; 
+}
+
+#navBox { 
+	width: 1160px; 
+	margin: 0 auto; 
+}
+
+.menuList { 
+	text-align: center; 
+}
+
+.menuDropdown { 
+	display: inline-block; 
+	margin: 7px 200px 7px 0; 
+}
+
+#menuDropdownRight { 
+	margin: 7px 0; 
+}
+
+.menuDropdown a { 
+	background: #646e7898; 
+	color:#ffffff; 
+}
+
+.menuDropdown a:hover { 
+	background: #646e78; 
+}
+
+.menuDropdown:hover .menuItem { 
+	display: block; 
+	width: 150px; 
+	z-index: 1; 
+}
+
+.menuItem { 
+	display: none; 
+	position: absolute; 
+}
+
+.menuItem a { 
+	display: block; 
+	padding: 10px; 
+}
