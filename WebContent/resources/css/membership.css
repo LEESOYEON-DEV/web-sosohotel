@@ -1,0 +1,81 @@
+@charset "UTF-8";
+
+.membershipFm { 
+	background: #dfe4ec; 
+	width: 700px; 
+	margin: 0 auto 150px auto; 
+	padding: 100px 0; 
+}
+
+.membershipFm table { 
+	margin: 0 auto; 
+	border-spacing: 20px 20px; 
+}
+
+.membershipFm th { 
+	text-align: right; 
+}
+
+.membershipFm input { 
+	width: 220px; 
+	height: 50px; 
+	padding: 0 10px; 
+	text-align: left; 
+	font-size: 17px; 
+}
+
+.membershipFm hr { 
+	margin: 30px auto; 
+}
+
+/* 이메일 */
+
+.emailInput th { 
+	text-align: left; 
+}
+
+#emailText { 
+	text-align: right; 
+}
+
+#email { 
+	width: 80px; 
+}
+
+#emailSelected { 
+	width: 90px; 
+	height: 50px; 
+	font-size: 17px; 
+}
+
+#emailSelect { 
+	width: 115px; 
+	height: 50px; 
+	font-size: 17px; 
+}
+
+/* 버튼 */
+
+#checkBtn { 
+	width: 70px; 
+	height: 30px; 
+	font-size: 13px; 
+}
+
+#idInfoText, #pwInfoText { 
+	font-size: 13px; 
+	text-align: center; 
+}
+
+#btnBox td { 
+	padding: 50px 0 20px 0; 
+	text-align: center; 
+}
+
+#btnBox button { 
+	height: 50px; 
+}
+
+#resetBtn { 
+	background: #95a4a6; 
+}

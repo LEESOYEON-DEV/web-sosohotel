@@ -1,0 +1,36 @@
+@charset "UTF-8";
+
+#chkFm { 
+	background: #dfe4ec; 
+	width: 500px; 
+	height: 250px; 
+	padding-top: 30px; 
+	padding-bottom: 0; 
+}
+
+#chkFm table { 
+	margin: 0 auto; 
+	border-spacing: 20px; 
+}
+
+#chkBox th, #chkBox td { 
+	padding-top: 30px; 
+	text-align: center; 
+}
+
+#chkBox button { 
+	height: 40px; 
+}
+
+#btnBox { 
+	padding-top: 20px; 
+}
+
+#btnBox button { 
+	width: 70px; 
+	height: 40px; 
+}
+
+#resetBtn { 
+	background: #95a4a6; 
+}

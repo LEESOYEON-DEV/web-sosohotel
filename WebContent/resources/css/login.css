@@ -1,0 +1,38 @@
+@charset "UTF-8";
+
+#login { 
+	width: 100%; 
+}
+
+#loginFm { 
+	background: #dfe4ec; 
+	width: 500px; 
+	height: 200px; 
+	margin: 100px auto; 
+	padding: 20px; 
+}
+
+#loginFm hr { 
+	width: 480px; 
+	margin: 20px auto 0 auto; 
+}
+
+#loginTable { 
+	margin: 20px auto 40px auto; 
+	border-spacing: 30px 10px; 
+}
+
+#loginTable input { 
+	width: 130px; 
+	padding: 0 10px; 
+	text-align: left; 
+}
+
+#loginAssistTable { 
+	margin: 0 auto; 
+	border-spacing: 80px 20px; 
+}
+
+#loginAssistTable tr { 
+	font-size: 13px; 
+}

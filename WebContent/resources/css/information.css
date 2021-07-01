@@ -1,0 +1,42 @@
+@charset "UTF-8";
+
+#infoFm th { 
+	text-align: right; 
+}
+
+#infoFm table { 
+	margin: 0 auto; 
+	border-spacing: 20px 10px; 
+	font-size: 15px; 
+}
+
+#infoFm input { 
+	font-size: 15px; 
+}
+
+#infoFm button { 
+	width: 80px; 
+	height: 30px; 
+	margin-top: 50px; 
+}
+
+#deleteInfo { 
+	margin-right: 5px; 
+	padding-top: 20px; 
+	text-align: right; 
+	font-size: 10px; 
+}
+
+#updateInfo { 
+	text-align: right; 
+	font-size: 13px; 
+	font-weight: normal; 
+}
+
+#btnFm { 
+	text-align: center; 
+}
+
+#resetBtn { 
+	background: #95a4a6; 
+}
