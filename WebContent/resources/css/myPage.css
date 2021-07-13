@@ -1,0 +1,34 @@
+@charset "UTF-8";
+
+.myPage { 
+	width: 100%; 
+}
+
+.myPageForm { 
+	width: 1140px; 
+	margin: 0 auto; 
+}
+
+.myPageMenu { 
+	float: left; 
+	width: 150px; 
+	text-align: center; 
+}
+
+.myPageMenu div { 
+	padding: 15px 0; 
+	font-size: 20px; 
+	font-weight: normal; 
+	cursor: pointer; 
+}
+
+.myPageMenu hr { 
+	width: 130px; 
+	margin: 0 10px; 
+}
+
+.myPageContent { 
+	float: right; 
+	width: 950px; 
+	margin: 50px 0 200px 0; 
+}
