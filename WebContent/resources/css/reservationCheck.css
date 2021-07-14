@@ -1,0 +1,89 @@
+@charset "UTF-8";
+
+#reservationCheck { 
+	width: 100%; 
+}
+
+#resChkFm { 
+	background: #dfe4ec; 
+    width: 1140px; 
+    height: 300px; 
+    margin: 0 auto; 
+}
+
+#chk1 { 
+    float:left; 
+    width: 40%; 
+    margin: 60px 55px; 
+    padding: 0 auto; 
+}
+
+#chk1 table { 
+	width: 300px; 
+	height: 150px; 
+	margin: 0 auto; 
+}
+
+#chk1 td { 
+	text-align: right; 
+}
+
+#chk1 input { 
+	background: white; 
+    width: 180px; 
+    height: 40px; 
+    padding: 0 10px; 
+    border: 1px solid #d4d6d6; 
+    border-radius: 7px; 
+    color: black; 
+    font-weight: normal; 
+    font-size: 17px; 
+}
+
+#chk1 button { 
+	height: 40px; 
+	margin-top: 40px; 
+}
+
+#verticalLine { 
+    float:left; 
+    background: #646e78; 
+    width: 2px; 
+    height: 220px; 
+    margin: 40px auto; 
+    opacity: 50%; 
+}
+
+#chk2 { 
+    float:left; 
+    width: 40%; 
+    margin: 80px 55px; 
+    padding: 0 auto; 
+}
+
+#chk2 table { 
+	width: 300px; 
+	height: 160px; 
+	margin: 0 auto; 
+}
+
+#chk2 td { 
+	text-align: right; 
+}
+
+#chk2 input { 
+	background: white; 
+    width: 180px; 
+    height: 40px; 
+    padding: 0 10px; 
+    border: 1px solid #d4d6d6; 
+    border-radius: 7px; 
+    color: black; 
+    font-weight: normal; 
+    font-size: 17px; 
+}
+
+#chk2 button { 
+	height: 40px; 
+	margin-top: 20px; 
+}
