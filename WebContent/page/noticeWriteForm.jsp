@@ -17,14 +17,14 @@
         </div>
         <div style="width: 1140px; margin: 0 auto;">
         	<div style="background: yellow;">
-        		<input type="text" style="width: 1120px; height: 30px; font-size: 30sp; padding: 10px; text-align: left;" placeholder="글제목">
+        		<input type="text" style="width: 1120px; height: 30px; font-size: 30px; padding: 10px; text-align: left;" placeholder="글제목">
         	</div>
         	<div style="margin-top: 20px;">
         		<div style="float: left;">작성자 | 2021-07-19</div>
-        		<div style="float: right;">등록 취소</div>
+        		<div style="float: right;"><a href="#">등록</a> <a href="#" onclick="location.href='noticeList.jsp'">취소</a></div>
         	</div><br>
-        	<div style="background: pink; font-size: 20sp; margin-top: 40px; margin-bottom: 200px;">
-	        	<textarea rows="" cols="" style="width: 1120px; height: 800px; padding: 10px; font-size: 20sp;">
+        	<div style="font-size: 20px; margin-top: 40px; margin-bottom: 200px;">
+	        	<textarea rows="" cols="" style="width: 1120px; height: 800px; padding: 10px; font-size: 20px; margin-bottom: 20px; resize: none;">
 	        		나리는 꽃가루에 눈이 따끔해 (아야)
 					눈물이 고여도 꾹 참을래
 					내 마음 한켠 비밀스런 오르골에 넣어두고서
@@ -36,7 +36,7 @@
 	        	</textarea>
 	        	<div style="margin: 0 auto; width: 210px;">
 		        	<input type="submit" value="등록" style="margin: 0 auto; width: 100px; height: 60px; background: #646e78; border: none; border-radius: 7px; color: #ffffff; font-weight: bold; font-size: 15px; cursor: pointer;">
-		        	<input type="reset" value="취소" style="margin: 0 auto; width: 100px; height: 60px; background: #95a4a6; border: none; border-radius: 7px; color: #ffffff; font-weight: bold; font-size: 15px; cursor: pointer;">
+		        	<input type="reset" value="취소" onclick="location.href='noticeList.jsp'" style="margin: 0 auto; width: 100px; height: 60px; background: #95a4a6; border: none; border-radius: 7px; color: #ffffff; font-weight: bold; font-size: 15px; cursor: pointer;">
 	        	</div>
         	</div>
         </div>
