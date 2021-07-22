@@ -170,7 +170,7 @@
         <div style="width: 1140px; margin: 20px auto 200px auto;">
         	<table>
         		<tr>
-        			<td style="background: pink; width: 200px;"><button style="height: 40px;">글쓰기</button></td>
+        			<td style="background: pink; width: 200px;"><button style="height: 40px;" onclick="location.href='noticeWriteForm.jsp'">글쓰기</button></td>
         			<td style="background: yellow; width: 740px; text-align: center;"><  1  2  3  4  5  ></td>
         			<td style="background: black; width: 200px;"></td>
         		</tr>
