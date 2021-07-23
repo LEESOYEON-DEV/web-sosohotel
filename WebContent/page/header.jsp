@@ -22,7 +22,8 @@
 	            	<a href="logoutPro.jsp">로그아웃</a> |
 	                <a href="informationPro.jsp?id=<%=id %>">정보수정</a> |
             <%	} %>
-              	<a href="reservationCheckForm.jsp">예약확인</a>
+              	<a href="reservationCheckForm.jsp">예약확인</a> |
+              	<a href="noticeList.jsp">공지사항</a>
             </div>
             <div id="logoArea">
                 <h1><a href="main.jsp">SOSO HOTEL</a></h1>
