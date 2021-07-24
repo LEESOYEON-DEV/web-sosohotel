@@ -16,12 +16,13 @@
             <h2>공지사항</h2><hr>
         </div>
         <div style="width: 1140px; margin: 0 auto;">
-        	<div style="background: yellow;"><h1>글제목</h1></div>
+        	<div><h1>글제목</h1></div>
         	<div style="margin-top: 20px;">
         		<div style="float: left;">작성자 | 2021-07-19</div>
         		<div style="float: right;">수정 삭제</div>
         	</div><br>
-        	<div style="background: pink; font-size: 20px; margin-top: 40px; margin-bottom: 200px;">
+        	<hr style="margin-top: 20px;"><hr>
+        	<div style="font-size: 20px; margin-top: 40px; margin-bottom: 200px;">
         		나리는 꽃가루에 눈이 따끔해 (아야)
 				눈물이 고여도 꾹 참을래
 				내 마음 한켠 비밀스런 오르골에 넣어두고서
