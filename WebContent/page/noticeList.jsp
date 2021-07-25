@@ -24,7 +24,7 @@
         		<th style="width: 110px;">조회수</th>
         	</tr>
         	<tr>
-        		<th colspan="5" style="padding: 5px;"><hr></th>
+        		<th colspan="5" style="padding: 5px;"><hr><hr></th>
         	</tr>
         	<tr>
         		<td>1</td>
