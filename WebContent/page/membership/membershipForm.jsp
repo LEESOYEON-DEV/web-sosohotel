@@ -80,7 +80,7 @@
                 <tr id="btnBox">
                     <td colspan="3">
                         <button type="submit">가입</button>
-                        <button type="reset" id="resetBtn">취소</button>
+                        <button type="reset" id="resetBtn" onclick="location.href='../main.jsp'">취소</button>
                     </td>
                 </tr>
             </table>
