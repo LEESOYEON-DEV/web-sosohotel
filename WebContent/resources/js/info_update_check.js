@@ -82,7 +82,7 @@ function joinChk() {
 	
 	if(!regEmail.test(fm.email.value)) {
 		alert("이메일 형식이 올바르지 않습니다.");
-		fm.email.value = "<%=email %>";
+		fm.email.value = "";
 		fm.email.focus();
 		return false;
 	}
