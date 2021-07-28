@@ -7,7 +7,7 @@ public class NoticeDAO {
 	
 	private NoticeDAO() {}
 	
-	private static NoticeDAO getInstance() {
+	public static NoticeDAO getInstance() {
 		if(instance == null)
 			instance = new NoticeDAO();
 		return instance;
