@@ -3,7 +3,12 @@
 <%@ page import="java.util.*"%>
 <%@ page import="mvc.model.NoticeDTO"%>
 <%
-	String sessionId = (String)session.getAttribute("id");
+	String sessionId;
+	if(session.getAttribute("id") != null)
+		sessionId = (String)session.getAttribute("id");
+	else
+		sessionId = "guest";
+	
 	List noticeList = (List)request.getAttribute("list");
 	int total_record = ((Integer)request.getAttribute("total_record")).intValue(); // 총 게시물 수
 	int pageNum = ((Integer)request.getAttribute("pageNum")).intValue();
@@ -15,6 +20,7 @@
     <meta charset="UTF-8" http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/common.css'/>">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/noticeList.css'/>">
     <title>SOSO HOTEL | 공지사항</title>
 </head>
 <body>
@@ -53,37 +59,35 @@
         	%>
         </table>
         <div style="width: 1140px; margin: 20px auto 200px auto;">
-        	<div>
+        	<div align="center">
         		<c:set var="pageNum" value="<%=pageNum%>"/>
-        		<c:forEach var="i" begin="1" end="<%=total_page%>">
+        		<c:forEach var="i" begin="1" end="<%=total_page%>"> <!-- 반복문 -->
         			<a href="<c:url value='./NoticeListAction.do?pageNum=${i}'/>">
         				<c:choose>
         					<c:when test="${pageNum == i}">
-        						<font color="red"><b>[${i}]</b></font>
+        						<font color="#646e78"><b>${i}</b></font>
         					</c:when>
         					<c:otherwise>
-        						<font color="blue">[${i}]</font>
+        						<font color="bebbb7">${i}</font>
         					</c:otherwise>
         				</c:choose>
         			</a>
         		</c:forEach>
         	</div>
-<!--         	<table>
-        		<tr>
-        			<td style="background: pink; width: 200px;"><button style="height: 40px;" onclick="location.href='noticeWriteForm.jsp'">글쓰기</button></td>
-        			<td style="background: yellow; width: 740px; text-align: center;"><  1  2  3  4  5  ></td>
-        			<td style="background: black; width: 200px;"></td>
-        		</tr>
-        	</table> -->
-	        
-	        <div style="width: 565px; margin: 20px auto 0 auto;">
-		        <select style="width: 115px; height: 40px; margin-right: 5px; padding: 0 10px; border: 1px solid #d4d6d6; border-radius: 7px; color: black; font-weight: normal;">
-		        	<option>제목+내용</option>
-		        	<option>작성자</option>
-		        </select>
-		        <input type="text" placeholder="검색어를 입력하세요" style="width: 300px; height: 40px; margin-right: 5px; padding: 0 10px; border: 1px solid #d4d6d6; border-radius: 7px; color: black; font-weight: normal;">
-		        <button style="height: 40px; background: #95a4a6;">검색</button>
-		    </div>
+        	<div align="right">
+        		<button style="height: 40px;" onclick="">글쓰기</button>
+        	</div>
+        	<form action="<c:url value='/NoticeListAction.do?pageNum=1'/>" method="post">
+		        <div style="width: 565px; margin: 20px auto 0 auto;">
+			        <select name="items" style="width: 115px; height: 40px; margin-right: 5px; padding: 0 10px; border: 1px solid #d4d6d6; border-radius: 7px; color: black; font-weight: normal;">
+			        	<option value="not_title">제목</option>
+			        	<option value="not_content">내용</option>
+			        	<option value="writer_name">작성자</option>
+			        </select>
+			        <input name="text" type="text" placeholder="검색어를 입력하세요" style="width: 300px; height: 40px; margin-right: 5px; padding: 0 10px; border: 1px solid #d4d6d6; border-radius: 7px; color: black; font-weight: normal;">
+			        <input type="submit" style="width: 100px; height: 40px; background: #95a4a6; border: none; border-radius: 7px; color: #ffffff; font-weight: bold; font-size: 15px; cursor: pointer;" value="검색">
+			    </div>
+		    </form>
         </div>
     </div>
 	<jsp:include page="../footer.jsp"/>
