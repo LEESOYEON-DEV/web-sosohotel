@@ -15,6 +15,11 @@
 	margin: 20px auto 200px auto; 
 }
 
+#search_box {
+	width: 565px; 
+	margin: 20px auto 0 auto; 
+}
+
 #items_select {
 	width: 115px; 
 	height: 40px; 
