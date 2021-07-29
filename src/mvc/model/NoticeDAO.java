@@ -34,7 +34,7 @@ public class NoticeDAO {
 		if(items == null && text == null) // 검색X (전체 게시물)
 			sql = "SELECT count(*) FROM notice";
 		else // 검색했을 때의 게시물
-			sql = "SELECT count(*) FROM notice WHERE " + items + "LIKE '%" + text + "%'"; // text를 포함하는 모든 데이터의 수
+			sql = "SELECT count(*) FROM notice WHERE " + items + " LIKE '%" + text + "%'"; // text를 포함하는 모든 데이터의 수
 		
 		try {
 			
@@ -82,7 +82,7 @@ public class NoticeDAO {
 		if(items == null && text == null) // 검색X (전체 게시물)
 			sql = "SELECT * FROM notice ORDER BY not_num DESC";
 		else // 검색했을 때의 게시물
-			sql = "SELECT * FROM notice WHERE " + items + "LIKE '%" + text + "%' ORDER BY not_num DESC"; // text를 포함하는 모든 데이터의 수
+			sql = "SELECT * FROM notice WHERE " + items + " LIKE '%" + text + "%' ORDER BY not_num DESC"; // text를 포함하는 모든 데이터의 수
 		
 		ArrayList<NoticeDTO> list = new ArrayList<NoticeDTO>();
 		
