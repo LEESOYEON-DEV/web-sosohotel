@@ -77,8 +77,8 @@
         	<div align="right">
         		<button style="height: 40px;" onclick="">글쓰기</button>
         	</div>
-        	<form action="<c:url value='/NoticeListAction.do'/>" method="post">
-		        <div style="width: 565px; margin: 20px auto 0 auto;">
+        	<form action="<c:url value='./NoticeListAction.do'/>" method="post" enctype="UTF-8">
+		        <div id="search_box">
 			        <select name="items" id="items_select">
 			        	<option value="not_title">제목</option>
 			        	<option value="not_content">내용</option>
