@@ -100,7 +100,8 @@ public class NoticeDAO {
 				notice.setName(rs.getString("writer_name"));
 				notice.setTitle(rs.getString("not_title"));
 				notice.setContent(rs.getString("not_content"));
-				notice.setDate(rs.getString("not_date"));
+				String date = rs.getString("not_date").substring(0, 10); // 시간 제외, 날짜만 출력
+				notice.setDate(date);
 				notice.setHit(rs.getInt("not_hit"));
 				list.add(notice);
 				
