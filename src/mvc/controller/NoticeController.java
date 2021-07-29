@@ -51,7 +51,7 @@ public class NoticeController extends HttpServlet {
 		int pageNum = 1;
 		int limit = LISTCOUNT;
 		
-		if(req.getParameter("pageNum") != null)
+		if(req.getParameter("pageNum") != null) // pageNum 파라미터 값이 들어있다면 해당 값을 대입
 			pageNum = Integer.parseInt(req.getParameter("pageNum"));
 		
 		String items = req.getParameter("items");
