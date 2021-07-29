@@ -29,8 +29,8 @@
         <div id="title">
             <h2>공지사항</h2><hr>
         </div>
-        <table style="margin: 0 auto; width: 1140px; text-align: center;">
-        	<tr style="padding: 10px;">
+        <table>
+        	<tr id="column" style="padding: 10px;">
         		<th style="width: 110px;">글번호</th>
         		<th style="width: 600px;">제목</th>
         		<th style="width: 120px;">작성자</th>
@@ -46,7 +46,7 @@
         	%>
         	<tr>
         		<td><%=notice.getNum()%></td>
-        		<td style="text-align: left; padding-left: 10px;"><%=notice.getTitle()%></td>
+        		<td id="not_title"><%=notice.getTitle()%></td>
         		<td><%=notice.getName()%></td>
         		<td><%=notice.getDate()%></td>
         		<td><%=notice.getHit()%></td>
@@ -58,7 +58,7 @@
         		}
         	%>
         </table>
-        <div style="width: 1140px; margin: 20px auto 200px auto;">
+        <div id="page_number">
         	<div align="center">
         		<c:set var="pageNum" value="<%=pageNum%>"/>
         		<c:forEach var="i" begin="1" end="<%=total_page%>"> <!-- 반복문 -->
@@ -79,13 +79,13 @@
         	</div>
         	<form action="<c:url value='/NoticeListAction.do?pageNum=1'/>" method="post">
 		        <div style="width: 565px; margin: 20px auto 0 auto;">
-			        <select name="items" style="width: 115px; height: 40px; margin-right: 5px; padding: 0 10px; border: 1px solid #d4d6d6; border-radius: 7px; color: black; font-weight: normal;">
+			        <select name="items" id="items_select" style="">
 			        	<option value="not_title">제목</option>
 			        	<option value="not_content">내용</option>
 			        	<option value="writer_name">작성자</option>
 			        </select>
-			        <input name="text" type="text" placeholder="검색어를 입력하세요" style="width: 300px; height: 40px; margin-right: 5px; padding: 0 10px; border: 1px solid #d4d6d6; border-radius: 7px; color: black; font-weight: normal;">
-			        <input type="submit" style="width: 100px; height: 40px; background: #95a4a6; border: none; border-radius: 7px; color: #ffffff; font-weight: bold; font-size: 15px; cursor: pointer;" value="검색">
+			        <input name="text" type="text" placeholder="검색어를 입력하세요" id="search_input">
+			        <input type="submit" id="search_btn" value="검색">
 			    </div>
 		    </form>
         </div>
