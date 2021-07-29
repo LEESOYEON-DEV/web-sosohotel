@@ -79,7 +79,7 @@ public class NoticeDAO {
 		
 		String sql;
 		
-		if(items == null && text == null)
+		if(items == null && text == null) // 검색X (전체 게시물)
 			sql = "SELECT * FROM notice ORDER BY not_num DESC";
 		else // 검색했을 때의 게시물
 			sql = "SELECT * FROM notice WHERE " + items + "LIKE '%" + text + "%' ORDER BY not_num DESC"; // text를 포함하는 모든 데이터의 수
@@ -93,12 +93,13 @@ public class NoticeDAO {
 			rs = pstmt.executeQuery();
 			
 			while(rs.absolute(index)) { // index 행으로 커서 이동
+				
 				NoticeDTO notice = new NoticeDTO();
 				notice.setNum(rs.getInt("not_num"));
 				notice.setId(rs.getString("writer_id"));
 				notice.setName(rs.getString("writer_name"));
 				notice.setTitle(rs.getString("not_title"));
-				notice.setContent(rs.getString("not_cotent"));
+				notice.setContent(rs.getString("not_content"));
 				notice.setDate(rs.getString("not_date"));
 				notice.setHit(rs.getInt("not_hit"));
 				list.add(notice);
