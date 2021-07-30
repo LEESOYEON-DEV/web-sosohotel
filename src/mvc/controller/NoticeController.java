@@ -34,9 +34,14 @@ public class NoticeController extends HttpServlet {
 		resp.setContentType("text/html; charset=UTF-8"); // 웹 브라우저에 응답할 MIME 유형 설정
 		
 		// 공지사항 목록 출력
-		if(command.equals("/NoticeListAction.do") ) {
+		if(command.equals("/NoticeListAction.do")) {
 			reqNoticeList(req); // 등록된 글 목록 가져오기
 			RequestDispatcher rd = req.getRequestDispatcher("./page/notice/noticeList.jsp");
+			rd.forward(req, resp);
+		// 게시물 작성 페이지 출력
+		} else if(command.equals("/NoticeWriteForm.do")) {
+			reqLoginName(req); // 인증된 사용자 이름 가져오기 (작성자)
+			RequestDispatcher rd = req.getRequestDispatcher("./page/notice/noticeWriteForm.jsp");
 			rd.forward(req, resp);
 		}
 		
@@ -75,4 +80,16 @@ public class NoticeController extends HttpServlet {
 		req.setAttribute("total_record", total_record);
 		req.setAttribute("list", list);
 	}
+
+	// 인증된 사용자 이름 가져오기 (작성자)
+	public void reqLoginName(HttpServletRequest req) {
+		
+		String id = req.getParameter("id");
+		
+		NoticeDAO dao = NoticeDAO.getInstance();
+		String name = dao.getLoginNameById(id);
+		
+		req.setAttribute("name", name);
+	}
+	
 }
