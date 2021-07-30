@@ -217,6 +217,103 @@ public class NoticeDAO {
 		}
 	}
 
+	// 선택된 게시물 상세 내용 가져오기
+	public NoticeDTO getNoticeByNum(int num, int page) {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		NoticeDTO dto = null;
+		
+		updateHit(num);
+		String sql = "SELECT * FROM notice WHERE not_num = ?";
+		
+		try {
+			
+			conn = DBConn.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto = new NoticeDTO();
+				dto.setNum(rs.getInt("not_num"));
+				dto.setId(rs.getString("writer_id"));
+				dto.setName(rs.getString("writer_name"));
+				dto.setTitle(rs.getString("not_title"));
+				dto.setContent(rs.getString("not_content"));
+				String date = rs.getString("not_date").substring(0, 10); // 시간 제외, 날짜만 출력
+				dto.setDate(date);
+				dto.setHit(rs.getInt("not_hit"));
+			}
+			
+			return dto;
+			
+		} catch(Exception e) {
+			
+			System.out.println("getNoticeByNum() error : " + e);
+			
+		} finally {
+			
+			try {
+				
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+				
+			} catch(Exception e) {
+				
+				throw new RuntimeException(e.getMessage());
+			}
+			
+		}
+		
+		return null;
+	}
 	
+	// 선택한 게시물의 조회수 증가
+	public void updateHit(int num) {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			conn = DBConn.getConnection();
+			
+			String sql = "SELECT not_hit FROM notice WHERE not_num = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			rs = pstmt.executeQuery();
+			
+			int hit = 0;
+			if(rs.next())
+				hit = rs.getInt("not_hit") + 1;
+			
+			sql = "UPDATE notice SET not_hit = ? WHERE not_num = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, hit);
+			pstmt.setInt(2, num);
+			pstmt.executeUpdate();
+			
+		} catch(Exception e) {
+			
+			System.out.println("updateHit() error : " + e);
+			
+		} finally {
+			
+			try {
+				
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+				
+			} catch(Exception e) {
+				
+				throw new RuntimeException(e.getMessage());
+			}
+		}
+	}
 
 }
