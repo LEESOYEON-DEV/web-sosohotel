@@ -51,6 +51,15 @@ public class NoticeController extends HttpServlet {
 			reqNoticeWrite(req);
 			RequestDispatcher rd = req.getRequestDispatcher("/NoticeListAction.do");
 			rd.forward(req, resp);
+		// 선택한 게시물 가져오기
+		} else if(command.equals("/NoticeViewAction.do")) {
+			reqNoticeView(req);
+			RequestDispatcher rd = req.getRequestDispatcher("/NoticeView.do");
+			rd.forward(req, resp);
+		// 선택한 게시물 페이지 출력
+		} else if(command.equals("/NoticeView.do")) {
+			RequestDispatcher rd = req.getRequestDispatcher("./page/notice/noticeView.jsp");
+			rd.forward(req, resp);
 		}
 		
 	}
@@ -125,5 +134,18 @@ public class NoticeController extends HttpServlet {
 		dao.insertNotice(dto);
 	}
 	
-	
+	// 선택한 게시물 상세 페이지 가져오기
+	public void reqNoticeView(HttpServletRequest req) {
+		
+		NoticeDAO dao = NoticeDAO.getInstance();
+		int num = Integer.parseInt(req.getParameter("num"));
+		int page = Integer.parseInt(req.getParameter("pageNum"));
+		
+		NoticeDTO dto = new NoticeDTO();
+		dto = dao.getNoticeByNum(num, page);
+		
+		req.setAttribute("num", num);
+		req.setAttribute("page", page);
+		req.setAttribute("notice", dto);
+	}
 }
