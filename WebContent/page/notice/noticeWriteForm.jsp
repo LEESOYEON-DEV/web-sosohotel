@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
+	String sessionId = (String)request.getAttribute("id");
 	String name = (String)request.getAttribute("name");
 %>
 <!DOCTYPE html>
@@ -18,7 +19,7 @@
         <div id="title">
             <h2>공지사항</h2><hr>
         </div>
-        <form action="" method="post" onsubmit="return check()" name="fm">
+        <form action="./NoticeWriteAction.do?id=<%=sessionId%>" method="post" onsubmit="return check()" name="fm">
 	        <div id="write_form">
 	        	<div>
 	        		<input name="title" type="text" placeholder="제목을 입력하세요" id="title" style="width: 1120px;">
