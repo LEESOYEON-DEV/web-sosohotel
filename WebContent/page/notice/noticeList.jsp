@@ -21,6 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/common.css'/>">
     <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/noticeList.css'/>">
+    <script src="<c:url value='/resources/js/underline_set.js'/>" charset="UTF-8"></script>
     <title>SOSO HOTEL | 공지사항</title>
 </head>
 <body>
@@ -46,7 +47,9 @@
         	%>
         	<tr>
         		<td><%=notice.getNum()%></td>
-        		<td id="not_title"><%=notice.getTitle()%></td>
+        		<td id="not_title" onmouseover="underline(this)" onmouseout="underlineDelete(this)">
+        			<a href="./NoticeViewAction.do?num=<%=notice.getNum()%>&pageNum=<%=pageNum%>"><%=notice.getTitle()%></a>
+        		</td>
         		<td><%=notice.getName()%></td>
         		<td><%=notice.getDate()%></td>
         		<td><%=notice.getHit()%></td>
