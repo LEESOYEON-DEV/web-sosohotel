@@ -134,6 +134,7 @@ public class NoticeDAO {
 		return null;
 	}
 
+	// 인증된 id의 사용자 이름을 가져오는 메소드
 	public String getLoginNameById(String id) {
 		
 		Connection conn = null;
@@ -176,4 +177,46 @@ public class NoticeDAO {
 		
 		return null;
 	}
+
+	// notice 테이블에 새 게시물 삽입
+	public void insertNotice(NoticeDTO dto) {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			
+			conn = DBConn.getConnection();
+			
+			String sql = "INSERT INTO notice(writer_id, writer_name, not_title, not_content, not_date, not_hit) VALUES(?, ?, ?, ?, ?, ?)";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, dto.getId());
+			pstmt.setString(2, dto.getName());
+			pstmt.setString(3, dto.getTitle());
+			pstmt.setString(4, dto.getContent());
+			pstmt.setString(5, dto.getDate());
+			pstmt.setInt(6, dto.getHit());
+			pstmt.executeUpdate();			
+			
+		} catch(Exception e) {
+			
+			System.out.println("insertNotice() error : " + e);
+			
+		} finally {
+			
+			try {
+				
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+				
+			} catch(Exception e) {
+				
+				throw new RuntimeException(e.getMessage());
+			}
+		}
+	}
+
+	
+
 }
