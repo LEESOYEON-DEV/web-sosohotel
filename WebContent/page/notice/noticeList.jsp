@@ -75,7 +75,9 @@
         		</c:forEach>
         	</div>
         	<div align="right">
-        		<button style="height: 40px;" onclick="">글쓰기</button>
+        	<% if(sessionId.equals("admin")) { %>
+        		<button style="height: 40px;" onclick="location.href='./NoticeWriteForm.do?id=<%=sessionId%>'">글쓰기</button>
+        	<% } %>
         	</div>
         	<form action="<c:url value='./NoticeListAction.do'/>" method="post" enctype="UTF-8">
 		        <div id="search_box">
