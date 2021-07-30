@@ -9,7 +9,9 @@
 #not_title {
 	text-align: left; 
 	padding-left: 10px; 
+	cursor: pointer;
 }
+
 #page_number {
 	width: 1140px; 
 	margin: 20px auto 200px auto; 
