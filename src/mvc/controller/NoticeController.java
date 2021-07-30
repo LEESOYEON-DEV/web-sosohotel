@@ -1,7 +1,10 @@
 package mvc.controller;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -42,6 +45,11 @@ public class NoticeController extends HttpServlet {
 		} else if(command.equals("/NoticeWriteForm.do")) {
 			reqLoginName(req); // 인증된 사용자 이름 가져오기 (작성자)
 			RequestDispatcher rd = req.getRequestDispatcher("./page/notice/noticeWriteForm.jsp");
+			rd.forward(req, resp);
+		// 새 게시물 등록
+		} else if(command.equals("/NoticeWriteAction.do")) {
+			reqNoticeWrite(req);
+			RequestDispatcher rd = req.getRequestDispatcher("/NoticeListAction.do");
 			rd.forward(req, resp);
 		}
 		
@@ -91,5 +99,31 @@ public class NoticeController extends HttpServlet {
 		
 		req.setAttribute("name", name);
 	}
+	
+	// 새 게시물 등록
+	public void reqNoticeWrite(HttpServletRequest req) {
+		
+		NoticeDAO dao = NoticeDAO.getInstance();
+		
+		NoticeDTO dto = new NoticeDTO();
+		dto.setId(req.getParameter("id"));
+		dto.setName(req.getParameter("name"));
+		dto.setTitle(req.getParameter("title"));
+		dto.setContent(req.getParameter("content"));
+		dto.setHit(0);
+		
+		Calendar now = Calendar.getInstance();
+		int year = now.get(Calendar.YEAR);
+		int month = now.get(Calendar.MONTH)+1;
+		int day = now.get(Calendar.DAY_OF_MONTH);
+		int hour = now.get(Calendar.HOUR_OF_DAY);
+		int minute = now.get(Calendar.MINUTE);
+		int second = now.get(Calendar.SECOND);
+		String date = year+"-"+month+"-"+day+" "+hour+":"+minute+":"+second;
+		dto.setDate(date);
+		
+		dao.insertNotice(dto);
+	}
+	
 	
 }
