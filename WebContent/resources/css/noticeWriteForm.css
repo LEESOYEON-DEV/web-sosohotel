@@ -1,0 +1,60 @@
+@charset "UTF-8";
+
+#write_form {
+	width: 1140px; 
+	margin: 0 auto; 
+}
+
+#title {
+	height: 30px; 
+	font-size: 30px; 
+	padding: 10px; 
+	text-align: left; 
+	margin-bottom: 10px; 
+}
+
+#content_box {
+	font-size: 20px; 
+	margin-top: 40px; 
+	margin-bottom: 200px; 
+}
+
+#content {
+	width: 1120px; 
+	height: 600px; 
+	padding: 10px; 
+	font-size: 20px; 
+	margin-bottom: 20px; 
+	resize: none; 
+}
+
+#btn_box {
+	margin: 0 auto; 
+	width: 210px; 
+}
+
+#btn_submit {
+	margin: 0 auto; 
+	width: 100px; 
+	height: 60px; 
+	background: #646e78; 
+	border: none; 
+	border-radius: 7px; 
+	color: #ffffff; 
+	font-weight: bold; 
+	font-size: 15px; 
+	cursor: pointer; 
+}
+
+#btn_reset {
+	margin: 0 auto; 
+	width: 100px; 
+	height: 60px; 
+	background: #95a4a6; 
+	border: none; 
+	border-radius: 7px; 
+	color: #ffffff; 
+	font-weight: bold; 
+	font-size: 15px; 
+	cursor: pointer; 
+}
