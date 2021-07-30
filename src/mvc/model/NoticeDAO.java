@@ -47,7 +47,7 @@ public class NoticeDAO {
 			
 		} catch(Exception e) {
 			
-			System.out.println("getListCount() 에러 : " + e);
+			System.out.println("getListCount() error : " + e);
 			
 		} finally {
 			
@@ -115,7 +115,7 @@ public class NoticeDAO {
 			
 		} catch(Exception e) {
 			
-			System.out.println("getNoticeList() 에러 : " + e);
+			System.out.println("getNoticeList() error : " + e);
 			
 		} finally {
 			
@@ -129,6 +129,49 @@ public class NoticeDAO {
 				
 				throw new RuntimeException(e.getMessage());
 			}
+		}
+		
+		return null;
+	}
+
+	public String getLoginNameById(String id) {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String name = null;
+		String sql = "SELECT * FROM member WHERE user_id = ?";
+		
+		try {
+			
+			conn = DBConn.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next())
+				name = rs.getString("user_name");
+			
+			return name;
+			
+		} catch(Exception e) {
+			
+			System.out.println("getLoginNameById() error : " + e);
+			
+		} finally {
+			
+			try {
+				
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+				
+			} catch(Exception e) {
+				
+				throw new RuntimeException(e.getMessage());
+			}
+			
 		}
 		
 		return null;
