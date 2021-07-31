@@ -31,7 +31,7 @@
 		        	<textarea name="content" id="content"><%=notice.getContent()%></textarea>
 		        	<div id="btn_box">
 			        	<input type="submit" value="수정" id="btn_submit">
-			        	<input type="reset" value="취소" onclick="location.href='./NoticeListAction.do?pageNum=1'" id="btn_reset">
+			        	<input type="reset" value="취소" onclick="location.href='./notice/NoticeListAction.do?pageNum=1'" id="btn_reset">
 		        	</div>
 	        	</div>
 	        </div>
