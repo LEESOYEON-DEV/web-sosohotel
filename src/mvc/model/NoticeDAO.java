@@ -349,4 +349,103 @@ public class NoticeDAO {
 		}
 	}
 	
+	// 수정할 게시물 내용 가져오기
+	public NoticeDTO updateForm(int num) {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		NoticeDTO dto = null;
+		
+		updateHit(num);
+		
+		try {
+			
+			conn = DBConn.getConnection();
+			
+			String sql = "SELECT * FROM notice WHERE not_num=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			rs = pstmt.executeQuery();
+			
+			String userId = null;
+			if(rs.next()) {
+				dto = new NoticeDTO();
+				dto.setNum(rs.getInt("not_num"));
+				userId = rs.getString("writer_id");
+				dto.setTitle(rs.getString("not_title"));
+				dto.setContent(rs.getString("not_content"));
+			}
+			
+			// 사용자 이름은 member 테이블에서 가져옴
+			sql = "SELECT user_name FROM member WHERE user_id=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userId);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next())
+				dto.setName(rs.getString("user_name"));
+			
+			return dto;
+			
+		} catch(Exception e) {
+			
+			System.out.println("updateForm() error : " + e);
+			
+		} finally {
+			
+			try {
+				
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+				
+			} catch(Exception e) {
+				
+				throw new RuntimeException(e.getMessage());
+			}
+		}
+		return null;
+	}
+	
+	// 기존 데이터 수정 (게시물 수정)
+	public void updateNotice(NoticeDTO dto) {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			
+			String sql = "UPDATE notice SET writer_name=?, not_title=?, not_content=?, not_date=? WHERE not_num=?";
+			
+			conn = DBConn.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			conn.setAutoCommit(false);
+			
+			pstmt.setString(1, dto.getName());
+			pstmt.setString(2, dto.getTitle());
+			pstmt.setString(3, dto.getContent());
+			pstmt.setString(4, dto.getDate());
+			pstmt.setInt(5, dto.getNum());
+			
+			pstmt.executeUpdate();
+			conn.commit();
+			
+		} catch(Exception e) {
+			
+			System.out.println("updateNotice() error : " + e);
+			
+		} finally {
+			
+			try {
+				
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+				
+			} catch(Exception e) {
+				
+				throw new RuntimeException(e.getMessage());
+			}
+		}
+	}
 }
