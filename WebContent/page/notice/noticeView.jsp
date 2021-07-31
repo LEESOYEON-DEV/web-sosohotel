@@ -29,8 +29,8 @@
         		</div>
         		<% if(sessionId.equals(notice.getId())) { %>
         		<div style="float: right;">
-        			<a href="./NoticeUpdateForm.do?num=<%=notice.getNum()%>">수정</a>
-        			<a href="./NoticeDeleteAction.do?num=<%=notice.getNum()%>">삭제</a>
+        			<a href="./notice/NoticeUpdateForm.do?num=<%=notice.getNum()%>">수정</a>
+        			<a href="./notice/NoticeDeleteAction.do?num=<%=notice.getNum()%>">삭제</a>
         		</div>
         		<% } %>
         	</div><br>
