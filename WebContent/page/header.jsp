@@ -22,7 +22,7 @@
 	                <a href="<c:url value='/page/mypage/informationPro.jsp?id=<%=id %>'/>">정보수정</a> |
             <%	} %>
               	<a href="<c:url value='/page/reservation/reservationCheckForm.jsp'/>">예약확인</a> |
-              	<a href="<c:url value='/NoticeListAction.do?pageNum=1'/>">공지사항</a>
+              	<a href="<c:url value='/notice/NoticeListAction.do?pageNum=1'/>">공지사항</a>
             </div>
             <div id="logoArea">
                 <h1><a href="<c:url value='/page/main.jsp'/>">SOSO HOTEL</a></h1>
