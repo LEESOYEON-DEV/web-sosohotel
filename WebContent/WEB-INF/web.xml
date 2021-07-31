@@ -7,6 +7,6 @@
   </servlet>
   <servlet-mapping>
   	<servlet-name>NoticeController</servlet-name>
-  	<url-pattern>*.do</url-pattern>
+  	<url-pattern>/notice/*</url-pattern>
   </servlet-mapping>
 </web-app>
