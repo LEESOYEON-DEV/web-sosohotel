@@ -60,6 +60,11 @@ public class NoticeController extends HttpServlet {
 		} else if(command.equals("/NoticeView.do")) {
 			RequestDispatcher rd = req.getRequestDispatcher("./page/notice/noticeView.jsp");
 			rd.forward(req, resp);
+		// 게시물 삭제
+		} else if(command.contentEquals("/NoticeDeleteAction.do")) {
+			reqNoticeDelete(req);
+			RequestDispatcher rd = req.getRequestDispatcher("/NoticeListAction.do?pageNum=1");
+			rd.forward(req, resp);
 		}
 		
 	}
@@ -147,5 +152,14 @@ public class NoticeController extends HttpServlet {
 		req.setAttribute("num", num);
 		req.setAttribute("page", page);
 		req.setAttribute("notice", dto);
+	}
+	
+	// 게시물 삭제
+	public void reqNoticeDelete(HttpServletRequest req) {
+		
+		int num = Integer.parseInt(req.getParameter("num"));
+		
+		NoticeDAO dao = NoticeDAO.getInstance();
+		dao.deleteNotice(num);
 	}
 }
