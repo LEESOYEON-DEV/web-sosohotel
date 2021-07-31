@@ -21,7 +21,7 @@
         <div id="title">
             <h2>공지사항</h2><hr>
         </div>
-        <form action="./NoticeUpdateAction.do?num=<%=num%>" method="post" onsubmit="return check()" name="fm">
+        <form action="./notice/NoticeUpdateAction.do?num=<%=num%>" method="post" onsubmit="return check()" name="fm">
 	        <div id="write_form">
 	        	<div>
 	        		<input name="title" type="text" value="<%=notice.getTitle()%>" id="title" style="width: 1120px;">
