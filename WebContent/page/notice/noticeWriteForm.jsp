@@ -19,7 +19,7 @@
         <div id="title">
             <h2>공지사항</h2><hr>
         </div>
-        <form action="./notice/NoticeWriteAction.do?id=<%=sessionId%>" method="post" onsubmit="return check()" name="fm">
+        <form action="../noticeController/NoticeWriteAction.do?id=<%=sessionId%>" method="post" onsubmit="return check()" name="fm">
 	        <div id="write_form">
 	        	<div>
 	        		<input name="title" type="text" placeholder="제목을 입력하세요" id="title" style="width: 1120px;">
@@ -29,7 +29,7 @@
 		        	<textarea name="content" placeholder="내용을 입력하세요" id="content"></textarea>
 		        	<div id="btn_box">
 			        	<input type="submit" value="등록" id="btn_submit">
-			        	<input type="reset" value="취소" onclick="location.href='./notice/NoticeListAction.do?pageNum=1'" id="btn_reset">
+			        	<input type="reset" value="취소" onclick="location.href='../noticeController/NoticeListAction.do?pageNum=1'" id="btn_reset">
 		        	</div>
 	        	</div>
 	        </div>
