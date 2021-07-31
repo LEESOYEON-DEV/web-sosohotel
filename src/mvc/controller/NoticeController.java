@@ -37,47 +37,47 @@ public class NoticeController extends HttpServlet {
 		resp.setContentType("text/html; charset=UTF-8"); // 웹 브라우저에 응답할 MIME 유형 설정
 		
 		// 공지사항 목록 출력
-		if(command.equals("/NoticeListAction.do")) {
+		if(command.equals("/notice/NoticeListAction.do")) {
 			reqNoticeList(req); // 등록된 글 목록 가져오기
-			RequestDispatcher rd = req.getRequestDispatcher("./page/notice/noticeList.jsp");
+			RequestDispatcher rd = req.getRequestDispatcher("../page/notice/noticeList.jsp");
 			rd.forward(req, resp);
 		// 게시물 작성 페이지 출력
-		} else if(command.equals("/NoticeWriteForm.do")) {
+		} else if(command.equals("/notice/NoticeWriteForm.do")) {
 			reqLoginName(req); // 인증된 사용자 이름 가져오기 (작성자)
-			RequestDispatcher rd = req.getRequestDispatcher("./page/notice/noticeWriteForm.jsp");
+			RequestDispatcher rd = req.getRequestDispatcher("../page/notice/noticeWriteForm.jsp");
 			rd.forward(req, resp);
 		// 새 게시물 등록
-		} else if(command.equals("/NoticeWriteAction.do")) {
+		} else if(command.equals("/notice/NoticeWriteAction.do")) {
 			reqNoticeWrite(req);
-			RequestDispatcher rd = req.getRequestDispatcher("/NoticeListAction.do");
+			RequestDispatcher rd = req.getRequestDispatcher("/notice/NoticeListAction.do");
 			rd.forward(req, resp);
 		// 선택한 게시물 가져오기
-		} else if(command.equals("/NoticeViewAction.do")) {
+		} else if(command.equals("/notice/NoticeViewAction.do")) {
 			reqNoticeView(req);
-			RequestDispatcher rd = req.getRequestDispatcher("/NoticeView.do");
+			RequestDispatcher rd = req.getRequestDispatcher("/notice/NoticeView.do");
 			rd.forward(req, resp);
 		// 선택한 게시물 페이지 출력
-		} else if(command.equals("/NoticeView.do")) {
-			RequestDispatcher rd = req.getRequestDispatcher("./page/notice/noticeView.jsp");
+		} else if(command.equals("/notice/NoticeView.do")) {
+			RequestDispatcher rd = req.getRequestDispatcher("../page/notice/noticeView.jsp");
 			rd.forward(req, resp);
 		// 게시물 삭제
-		} else if(command.equals("/NoticeDeleteAction.do")) {
+		} else if(command.equals("/notice/NoticeDeleteAction.do")) {
 			reqNoticeDelete(req);
-			RequestDispatcher rd = req.getRequestDispatcher("/NoticeListAction.do?pageNum=1");
+			RequestDispatcher rd = req.getRequestDispatcher("/notice/NoticeListAction.do?pageNum=1");
 			rd.forward(req, resp);
 		// 수정할 게시물 정보 가져오기
-		} else if(command.equals("/NoticeUpdateForm.do")) {
+		} else if(command.equals("/notice/NoticeUpdateForm.do")) {
 			reqNoticeUpdateForm(req);
-			RequestDispatcher rd = req.getRequestDispatcher("NoticeUpdate.do");
+			RequestDispatcher rd = req.getRequestDispatcher("/notice/NoticeUpdate.do");
 			rd.forward(req, resp);
 		// 게시물 수정 페이지 출력
-		} else if(command.equals("/NoticeUpdate.do")) {
-			RequestDispatcher rd = req.getRequestDispatcher("./page/notice/noticeUpdateForm.jsp");
+		} else if(command.equals("/notice/NoticeUpdate.do")) {
+			RequestDispatcher rd = req.getRequestDispatcher("../page/notice/noticeUpdateForm.jsp");
 			rd.forward(req, resp);
 		// 게시물 수정
-		} else if(command.equals("/NoticeUpdateAction.do")) {
+		} else if(command.equals("/notice/NoticeUpdateAction.do")) {
 			reqNoticeUpdate(req);
-			RequestDispatcher rd = req.getRequestDispatcher("/NoticeListAction.do");
+			RequestDispatcher rd = req.getRequestDispatcher("/notice/NoticeListAction.do");
 			rd.forward(req, resp);
 		}
 	}
