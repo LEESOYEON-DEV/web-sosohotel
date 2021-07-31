@@ -13,7 +13,7 @@
     <title>SOSO HOTEL | 메인</title>
 </head>
 <body onload="checkInOut(); nights();">
-	<jsp:include page="header.jsp"></jsp:include>
+	<jsp:include page="header.jsp"/>
     <div id="mainTop">
         <div id="promotionImgFm">
             <img class="promotionImg" src="../resources/images/promotion/promotionImage_summer_holidays.png" alt="" width="280" height="280">
@@ -45,6 +45,6 @@
             </table>
         </div>
     </div>
-	<jsp:include page="footer.jsp"></jsp:include>
+	<jsp:include page="footer.jsp"/>
 </body>
 </html>
