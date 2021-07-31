@@ -48,7 +48,7 @@
         	<tr>
         		<td><%=notice.getNum()%></td>
         		<td id="not_title" onmouseover="underline(this)" onmouseout="underlineDelete(this)">
-        			<a href="./NoticeViewAction.do?num=<%=notice.getNum()%>&pageNum=<%=pageNum%>"><%=notice.getTitle()%></a>
+        			<a href="./notice/NoticeViewAction.do?num=<%=notice.getNum()%>&pageNum=<%=pageNum%>"><%=notice.getTitle()%></a>
         		</td>
         		<td><%=notice.getName()%></td>
         		<td><%=notice.getDate()%></td>
@@ -65,7 +65,7 @@
         	<div align="center">
         		<c:set var="pageNum" value="<%=pageNum%>"/>
         		<c:forEach var="i" begin="1" end="<%=total_page%>"> <!-- 반복문 -->
-        			<a href="<c:url value='./NoticeListAction.do?pageNum=${i}'/>">
+        			<a href="<c:url value='./notice/NoticeListAction.do?pageNum=${i}'/>">
         				<c:choose>
         					<c:when test="${pageNum == i}">
         						<font color="#646e78"><b>${i}</b></font>
@@ -79,10 +79,10 @@
         	</div>
         	<div align="right">
         	<% if(sessionId.equals("admin")) { %>
-        		<button style="height: 40px;" onclick="location.href='./NoticeWriteForm.do?id=<%=sessionId%>'">글쓰기</button>
+        		<button style="height: 40px;" onclick="location.href='./notice/NoticeWriteForm.do?id=<%=sessionId%>'">글쓰기</button>
         	<% } %>
         	</div>
-        	<form action="<c:url value='./NoticeListAction.do'/>" method="post" enctype="UTF-8">
+        	<form action="<c:url value='./notice/NoticeListAction.do'/>" method="post" enctype="UTF-8">
 		        <div id="search_box">
 			        <select name="items" id="items_select">
 			        	<option value="not_title">제목</option>
