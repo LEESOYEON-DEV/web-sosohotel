@@ -61,12 +61,25 @@ public class NoticeController extends HttpServlet {
 			RequestDispatcher rd = req.getRequestDispatcher("./page/notice/noticeView.jsp");
 			rd.forward(req, resp);
 		// 게시물 삭제
-		} else if(command.contentEquals("/NoticeDeleteAction.do")) {
+		} else if(command.equals("/NoticeDeleteAction.do")) {
 			reqNoticeDelete(req);
 			RequestDispatcher rd = req.getRequestDispatcher("/NoticeListAction.do?pageNum=1");
 			rd.forward(req, resp);
+		// 수정할 게시물 정보 가져오기
+		} else if(command.equals("/NoticeUpdateForm.do")) {
+			reqNoticeUpdateForm(req);
+			RequestDispatcher rd = req.getRequestDispatcher("NoticeUpdate.do");
+			rd.forward(req, resp);
+		// 게시물 수정 페이지 출력
+		} else if(command.equals("/NoticeUpdate.do")) {
+			RequestDispatcher rd = req.getRequestDispatcher("./page/notice/noticeUpdateForm.jsp");
+			rd.forward(req, resp);
+		// 게시물 수정
+		} else if(command.equals("/NoticeUpdateAction.do")) {
+			reqNoticeUpdate(req);
+			RequestDispatcher rd = req.getRequestDispatcher("/NoticeListAction.do");
+			rd.forward(req, resp);
 		}
-		
 	}
 	
 	// 등록된 글 목록 가져오기
@@ -117,8 +130,6 @@ public class NoticeController extends HttpServlet {
 	// 새 게시물 등록
 	public void reqNoticeWrite(HttpServletRequest req) {
 		
-		NoticeDAO dao = NoticeDAO.getInstance();
-		
 		NoticeDTO dto = new NoticeDTO();
 		dto.setId(req.getParameter("id"));
 		dto.setName(req.getParameter("name"));
@@ -136,16 +147,17 @@ public class NoticeController extends HttpServlet {
 		String date = year+"-"+month+"-"+day+" "+hour+":"+minute+":"+second;
 		dto.setDate(date);
 		
+		NoticeDAO dao = NoticeDAO.getInstance();
 		dao.insertNotice(dto);
 	}
 	
 	// 선택한 게시물 상세 페이지 가져오기
 	public void reqNoticeView(HttpServletRequest req) {
 		
-		NoticeDAO dao = NoticeDAO.getInstance();
 		int num = Integer.parseInt(req.getParameter("num"));
 		int page = Integer.parseInt(req.getParameter("pageNum"));
 		
+		NoticeDAO dao = NoticeDAO.getInstance();
 		NoticeDTO dto = new NoticeDTO();
 		dto = dao.getNoticeByNum(num, page);
 		
@@ -161,5 +173,41 @@ public class NoticeController extends HttpServlet {
 		
 		NoticeDAO dao = NoticeDAO.getInstance();
 		dao.deleteNotice(num);
+	}
+
+	// 게시물 수정 페이지 설정
+	public void reqNoticeUpdateForm(HttpServletRequest req) {
+		
+		int num = Integer.parseInt(req.getParameter("num"));
+		
+		NoticeDAO dao = NoticeDAO.getInstance();
+		NoticeDTO dto = new NoticeDTO();
+		dto = dao.updateForm(num);
+		
+		req.setAttribute("num", num);
+		req.setAttribute("notice", dto);
+	}
+	
+	// 게시물 수정
+	public void reqNoticeUpdate(HttpServletRequest req) {
+		
+		NoticeDTO dto = new NoticeDTO();
+		dto.setNum(Integer.parseInt(req.getParameter("num")));
+		dto.setName(req.getParameter("name"));
+		dto.setTitle(req.getParameter("title"));
+		dto.setContent(req.getParameter("content"));
+		
+		Calendar now = Calendar.getInstance();
+		int year = now.get(Calendar.YEAR);
+		int month = now.get(Calendar.MONTH)+1;
+		int day = now.get(Calendar.DAY_OF_MONTH);
+		int hour = now.get(Calendar.HOUR_OF_DAY);
+		int minute = now.get(Calendar.MINUTE);
+		int second = now.get(Calendar.SECOND);
+		String date = year+"-"+month+"-"+day+" "+hour+":"+minute+":"+second;
+		dto.setDate(date);
+		
+		NoticeDAO dao = NoticeDAO.getInstance();
+		dao.updateNotice(dto);
 	}
 }
