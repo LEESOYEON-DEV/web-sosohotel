@@ -316,4 +316,37 @@ public class NoticeDAO {
 		}
 	}
 
+	// 게시물 삭제
+	public void deleteNotice(int num ) {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		String sql = "DELETE FROM notice WHERE not_num = ?";
+		
+		try {
+			
+			conn = DBConn.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			pstmt.executeUpdate();
+			
+		} catch(Exception e) {
+			
+			System.out.println("deleteNotice() error : " + e);
+			
+		} finally {
+			
+			try {
+				
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+				
+			} catch(Exception e) {
+				
+				throw new RuntimeException(e.getMessage());
+			}
+		}
+	}
+	
 }
