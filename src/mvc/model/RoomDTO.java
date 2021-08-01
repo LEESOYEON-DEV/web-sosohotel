@@ -10,7 +10,9 @@ public class RoomDTO {
 	private int weekendPrice;	// 주말가격
 	private int extraCharge;	// 추가요금
 	private int num;			// 보유객실수
-
+	private String weekdayPrice_s;	// 평일가격
+	private String weekendPrice_s;	// 주말가격
+	
 	public String getType() {
 		return type;
 	}
@@ -58,5 +60,17 @@ public class RoomDTO {
 	}
 	public void setNum(int num) {
 		this.num = num;
+	}
+	public String getWeekdayPrice_s() {
+		return weekdayPrice_s;
+	}
+	public void setWeekdayPrice_s(String weekdayPrice_s) {
+		this.weekdayPrice_s = weekdayPrice_s;
+	}
+	public String getWeekendPrice_s() {
+		return weekendPrice_s;
+	}
+	public void setWeekendPrice_s(String weekendPrice_s) {
+		this.weekendPrice_s = weekendPrice_s;
 	}
 }
