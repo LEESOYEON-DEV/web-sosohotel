@@ -9,4 +9,12 @@
   	<servlet-name>NoticeController</servlet-name>
   	<url-pattern>/noticeController/*</url-pattern>
   </servlet-mapping>
+    <servlet>
+  	<servlet-name>ReservationController</servlet-name>
+  	<servlet-class>mvc.controller.ReservationController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>ReservationController</servlet-name>
+  	<url-pattern>/resController/*</url-pattern>
+  </servlet-mapping>
 </web-app>
