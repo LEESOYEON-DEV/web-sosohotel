@@ -23,7 +23,7 @@
             <table>
                 <tr>
                 	<th>아이디</th>
-                	<td><input type="text" id="id" name="id"onclick="openIdChk()" onfocus="openIdChk()" onchange="openIdChk()"></td>
+                	<td><input type="text" id="id" name="id"onclick="openIdChk()" onfocus="openIdChk()" onchange="openIdChk()" readonly></td>
                 	<td><button type="button" id="checkBtn" onclick="openIdChk()">중복확인</button></td>
                 </tr>
                 <tr>
