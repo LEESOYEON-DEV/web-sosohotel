@@ -21,8 +21,9 @@
 	            	<a href="<c:url value='/page/logoutPro.jsp'/>">로그아웃</a> |
 	                <a href="<c:url value='/page/mypage/informationPro.jsp?id=<%=id %>'/>">정보수정</a> |
             <%	} %>
-              	<a href="<c:url value='/page/reservation/reservationCheckForm.jsp'/>">예약확인</a> |
-              	<a href="<c:url value='/noticeController/NoticeListAction.do?pageNum=1'/>">공지사항</a>
+            		<a href="<c:url value='/page/reservation/reservationCheckForm.jsp'/>">예약확인</a> |
+              		<a href="<c:url value='/noticeController/NoticeListAction.do?pageNum=1'/>">공지사항</a>
+              	
             </div>
             <div id="logoArea">
                 <h1><a href="<c:url value='/page/main.jsp'/>">SOSO HOTEL</a></h1>
@@ -67,7 +68,7 @@
                     <li class="menuDropdown" id="menuDropdownRight">
                         <a href="#">객실예약</a>
                         <div class="menuItem">
-                            <a href="<c:url value='/page/reservation/reservationForm.jsp'/>">실시간예약</a>
+                            <a href="<c:url value='/resController/reservationForm.do'/>">실시간예약</a>
                             <a href="<c:url value='/page/reservation/reservationCheckForm.jsp'/>">예약확인</a>
                         </div>
                     </li>
