@@ -4,11 +4,11 @@
 <%@ page import="mvc.model.NoticeDTO"%>
 <%
 	String sessionId;
-	if(session.getAttribute("id") != null)
-		sessionId = (String)session.getAttribute("id");
-	else
+	if(session.getAttribute("id") == null) {
 		sessionId = "guest";
-	
+	} else {
+		sessionId = (String)session.getAttribute("id");
+	}
 	List noticeList = (List)request.getAttribute("list");
 	int total_record = ((Integer)request.getAttribute("total_record")).intValue(); // 총 게시물 수
 	int pageNum = ((Integer)request.getAttribute("pageNum")).intValue();

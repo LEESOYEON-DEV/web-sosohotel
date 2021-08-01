@@ -2,7 +2,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="mvc.model.NoticeDTO"%>
 <%
-	String sessionId = (String)session.getAttribute("id");
+	String sessionId;
+	if(session.getAttribute("id") == null) {
+		sessionId = "guest";
+	} else {
+		sessionId = (String)session.getAttribute("id");
+	}
 	NoticeDTO notice = (NoticeDTO)request.getAttribute("notice");
 	int num = ((Integer)request.getAttribute("num")).intValue();
 	int nowPage = ((Integer)request.getAttribute("page")).intValue();
