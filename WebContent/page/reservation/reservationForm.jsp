@@ -119,18 +119,21 @@
 <%
 	String cusName = null, cusTel = null, cusEmail = null;
 	if(session.getAttribute("id") != null) {
-		List memberInfo = (List)request.getAttribute("memberInfo");
-		MemberDTO member = (MemberDTO)memberInfo.get(0);
-		cusName = member.getName();
-		cusTel = member.getTel();
-		cusEmail = member.getEmail();
-		//cusName = "회원";
-		//cusTel = "정보";
-		//cusEmail = "가져오기";
+		if(request.getAttribute("memberInfo") != null) {
+			List memberInfo = (List)request.getAttribute("memberInfo");
+			MemberDTO member = (MemberDTO)memberInfo.get(0);
+			cusName = member.getName();
+			cusTel = member.getTel();
+			cusEmail = member.getEmail();
+		} else {
+			cusName = "회원정보를";
+			cusTel = "읽어오지";
+			cusEmail = "못했습니다";
+		}
 	} else {
 		cusName = "비회원";
-		cusTel = "연락처";
-		cusEmail = "이메일";
+		cusTel = "";
+		cusEmail = "";
 	}
 %>
     <div class="reservationStep3">
