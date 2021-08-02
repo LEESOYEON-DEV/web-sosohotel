@@ -3,6 +3,7 @@ package mvc.model;
 public class RoomDTO {
 	
 	private String type;		// 객실타입
+	private String code;		// 객실코드
 	private String name;		// 객실명
 	private int basicPeople;	// 기준인원
 	private int addPeople;		// 추가인원
@@ -18,6 +19,12 @@ public class RoomDTO {
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
 	}
 	public String getName() {
 		return name;
