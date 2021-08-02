@@ -85,36 +85,6 @@
         %>            
         </div>
     </div>
-    <script type="text/javascript">
-    	// 예약 정보 자동 입력
-    	function selectChk(e) {
-    		
-    		inputData();
-    		
-			var i = e.value;
-			var roomName = document.getElementsByClassName("roomTitle")[i].innerHTML;
-			document.getElementById("resRmName").value = roomName;
-		}
-    	
-    	// 객실 정보 자동 입력
-    	function inputData() {
-    		
-			var checkIn = document.getElementById("checkIn");
-			var checkOut = document.getElementById("checkOut");
-			var nights = document.getElementById("nights");
-			var room = document.getElementById("room");
-			var adult = document.getElementById("adult");
-			var child = document.getElementById("child");
-			
-			document.getElementById("resCheckIn").value = checkIn.value;
-			document.getElementById("resCheckIn").value = checkIn.value;
-			document.getElementById("resCheckOut").value = checkOut.value;
-			document.getElementById("resNights").value = nights.innerHTML;
-			document.getElementById("resRmCnt").value = room.value;
-			document.getElementById("resAdultCnt").value = adult.value;
-			document.getElementById("resChildCnt").value = child.value;
-		}
-    </script>
 
 <%
 	String cusName = null, cusTel = null, cusEmail = null;
@@ -187,5 +157,35 @@
         </div>
     </div>
 	<jsp:include page="../footer.jsp"/>
+	<script type="text/javascript">
+    	// 예약 정보 자동 입력
+    	function selectChk(e) {
+    		
+    		inputData();
+    		
+			var i = e.value;
+			var roomName = document.getElementsByClassName("roomTitle")[i].innerHTML;
+			document.getElementById("resRmName").value = roomName;
+		}
+    	
+    	// 객실 정보 자동 입력
+    	function inputData() {
+    		
+			var checkIn = document.getElementById("checkIn");
+			var checkOut = document.getElementById("checkOut");
+			var nights = document.getElementById("nights");
+			var room = document.getElementById("room");
+			var adult = document.getElementById("adult");
+			var child = document.getElementById("child");
+			
+			document.getElementById("resCheckIn").value = checkIn.value;
+			document.getElementById("resCheckIn").value = checkIn.value;
+			document.getElementById("resCheckOut").value = checkOut.value;
+			document.getElementById("resNights").value = nights.innerHTML;
+			document.getElementById("resRmCnt").value = room.value;
+			document.getElementById("resAdultCnt").value = adult.value;
+			document.getElementById("resChildCnt").value = child.value;
+		}
+    </script>
 </body>
 </html>
