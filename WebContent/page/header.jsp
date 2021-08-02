@@ -1,3 +1,4 @@
+<%@page import="java.net.URLEncoder"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
@@ -19,7 +20,7 @@
 	                <a href="<c:url value='/page/membership/membershipForm.jsp'/>">회원가입</a> |
             <%  } else { // 현재 로그인 상태일 경우 %>
 	            	<a href="<c:url value='/page/logoutPro.jsp'/>">로그아웃</a> |
-	                <a href="<c:url value='/page/mypage/informationPro.jsp?id=<%=id%>'/>">정보수정</a> |
+	                <a href="<c:url value='/page/mypage/informationPro.jsp?id=${id}'/>">정보수정</a> |
             <%	} %>
             		<a href="<c:url value='/page/reservation/reservationCheckForm.jsp'/>">예약확인</a> |
               		<a href="<c:url value='/noticeController/NoticeListAction.do?pageNum=1'/>">공지사항</a>
@@ -70,9 +71,9 @@
                         <div class="menuItem">
 		                 <%	// 현재 로그인 상태가 아닐 경우 (session에 저장된 id가 없을 경우)
 		            		if(session.getAttribute("id") == null) { %>
-			             	  	<a href="<c:url value='/resController/reservationForm.do'/>">실시간예약</a>
+			             	  	<a href="<c:url value='/resController/reservationForm.do?'/>">실시간예약</a>
 		          		 <%  } else { // 현재 로그인 상태일 경우 %>
-			            		<a href="<c:url value='/resController/reservationForm.do?id=<%=id%>'/>">실시간예약</a>
+			            		<a href="<c:url value='/resController/reservationForm.do?id=${id}'/>">실시간예약</a>
 		          		 <%	} %>
                           		<a href="<c:url value='/page/reservation/reservationCheckForm.jsp'/>">예약확인</a>
                         </div>
