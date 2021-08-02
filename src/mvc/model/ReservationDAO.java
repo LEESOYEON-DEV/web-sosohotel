@@ -36,7 +36,7 @@ public class ReservationDAO {
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			
-			while(rs.next()) { // index 행으로 커서 이동
+			while(rs.next()) {
 				
 				RoomDTO room = new RoomDTO();
 				room.setType(rs.getString("rm_type"));
@@ -55,6 +55,49 @@ public class ReservationDAO {
 			
 		} catch(Exception e) {
 			System.out.println("getRoomList() error : " + e);
+			
+		} finally {
+			
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+				
+			} catch(Exception e) {
+				throw new RuntimeException(e.getMessage());
+			}
+		}
+		return null;
+	}
+
+	// 회원 정보 가져오기 (member 테이블의 레코드 가져오기)
+	public ArrayList<MemberDTO> getMemberInfo(String id) {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String sql = "SELECT * FROM member WHERE user_id=?";
+		ArrayList<MemberDTO> memberInfo = new ArrayList<MemberDTO>();
+		
+		try {	
+			conn = DBConn.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				
+				MemberDTO member = new MemberDTO();
+				member.setName(rs.getString("user_name"));
+				member.setTel(rs.getString("user_tel"));
+				member.setEmail(rs.getString("user_email"));
+				memberInfo.add(member);
+			}
+			return memberInfo;
+			
+		} catch(Exception e) {
+			System.out.println("getMemberInfo() error : " + e);
 			
 		} finally {
 			

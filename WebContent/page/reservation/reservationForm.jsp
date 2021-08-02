@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
 <%@ page import="mvc.model.RoomDTO"%>
+<%@ page import="mvc.model.MemberDTO"%>
 <%
 	String sessionId;
 	if(session.getAttribute("id") != null) sessionId = (String)session.getAttribute("id");
@@ -77,35 +78,82 @@
                         <tr><th>어린이</th><td class="childText"></td></tr>
                     </table>
                 </div>
-                <div id="selectBtn"><button>선택</button></div>
+                <div id="selectBtn"><button value="<%=i%>" onclick="selectChk(this);">선택</button></div>
             </div>
         <%
         	}
         %>            
         </div>
     </div>
+    <script type="text/javascript">
+    	// 예약 정보 자동 입력
+    	function selectChk(e) {
+    		
+    		inputData();
+    		
+			var i = e.value;
+			var roomName = document.getElementsByClassName("roomTitle")[i].innerHTML;
+			document.getElementById("resRmName").value = roomName;
+		}
+    	
+    	// 객실 정보 자동 입력
+    	function inputData() {
+    		
+			var checkIn = document.getElementById("checkIn");
+			var checkOut = document.getElementById("checkOut");
+			var nights = document.getElementById("nights");
+			var room = document.getElementById("room");
+			var adult = document.getElementById("adult");
+			var child = document.getElementById("child");
+			
+			document.getElementById("resCheckIn").value = checkIn.value;
+			document.getElementById("resCheckIn").value = checkIn.value;
+			document.getElementById("resCheckOut").value = checkOut.value;
+			document.getElementById("resNights").value = nights.innerHTML;
+			document.getElementById("resRmCnt").value = room.value;
+			document.getElementById("resAdultCnt").value = adult.value;
+			document.getElementById("resChildCnt").value = child.value;
+		}
+    </script>
 
+<%
+	String cusName = null, cusTel = null, cusEmail = null;
+	if(session.getAttribute("id") != null) {
+		List memberInfo = (List)request.getAttribute("memberInfo");
+		MemberDTO member = (MemberDTO)memberInfo.get(0);
+		cusName = member.getName();
+		cusTel = member.getTel();
+		cusEmail = member.getEmail();
+		//cusName = "회원";
+		//cusTel = "정보";
+		//cusEmail = "가져오기";
+	} else {
+		cusName = "비회원";
+		cusTel = "연락처";
+		cusEmail = "이메일";
+	}
+%>
     <div class="reservationStep3">
         <div class="infoCheckForm">
-            <form class="infoCheck" action="" method="post" enctype="UTF-8">
+            <form name="resFm" class="infoCheck" action="" method="post" enctype="UTF-8">
                 <div class="customerInfo">
                     <h3>예약자정보</h3>
                     <table>
-                        <tr><th>이름</th><td><input type="text"></td></tr>
-                        <tr><th>연락처</th><td><input type="text"></td></tr>
-                        <tr><th>이메일</th><td><input type="email"></td></tr>
+                        <tr><th>이름</th><td><input id="cusName" type="text" value="<%=cusName%>"></td></tr>
+                        <tr><th>연락처</th><td><input id="cusTel" type="text" value="<%=cusTel%>"></td></tr>
+                        <tr><th>이메일</th><td><input id="cusEmail" type="email" value="<%=cusEmail%>"></td></tr>
                     </table>
                 </div>
                 <div class="resultInfo">
                     <h3>예약정보</h3>
                     <table>
-                        <tr><th>객실타입</th><td><input type="text" readonly></td></tr>
-                        <tr><th>체크인</th><td><input type="date" readonly></td></tr>
-                        <tr><th>체크아웃</th><td><input type="date" readonly></td></tr>
-                        <tr><th>숙박일수</th><td><input type="text" readonly></td></tr>
-                        <tr><th>객실수</th><td><input type="text" readonly></td></tr>
-                        <tr><th>성인</th><td><input type="text" readonly></td></tr>
-                        <tr><th>어린이</th><td><input type="text" readonly></td></tr>
+                        <tr><th>객실명</th><td><input id="resRmName" type="text" readonly></td></tr>
+                        <tr><th>체크인</th><td><input id="resCheckIn" type="text" readonly></td></tr>
+                        <tr><th>체크아웃</th><td><input id="resCheckOut" type="text" readonly></td></tr>
+                        <tr><th>숙박일수</th><td><input id="resNights" type="text" readonly></td></tr>
+                        <tr><th>객실수</th><td><input id="resRmCnt" type="text" readonly></td></tr>
+                        <tr><th>성인</th><td><input id="resAdultCnt" type="text" readonly></td></tr>
+                        <tr><th>어린이</th><td><input id="resChildCnt" type="text" readonly></td></tr>
                     </table>
                 </div>
                 <div id="paymentInfo">
@@ -122,9 +170,9 @@
                         <h3>결제수단</h3>
                         <div id="methodCheck">
                             <div id="radioBox">
-                                <input type="radio" style="vertical-align: -8px;"> 신용카드<br>
-                                <input type="radio" style="vertical-align: -8px;"> 무통장입금<br>
-                                <input type="radio" style="vertical-align: -8px;"> 현장결제<br>
+                                <input name="method" value="credit" type="radio" style="vertical-align: -8px;"> 신용카드<br>
+                                <input name="method" value="cash" type="radio" style="vertical-align: -8px;"> 무통장입금<br>
+                                <input name="method" value="direct" type="radio" style="vertical-align: -8px;"> 현장결제<br>
                             </div>
                             <div id="btnBox">
                                 <button>결제</button>

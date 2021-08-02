@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import mvc.model.MemberDTO;
 import mvc.model.ReservationDAO;
 import mvc.model.RoomDTO;
 
@@ -45,5 +46,20 @@ public class ReservationController extends HttpServlet {
 		ReservationDAO dao = ReservationDAO.getInstance();
 		roomList = dao.getRoomList();
 		req.setAttribute("roomList", roomList);
+		
+		// 회원인 경우 (예약자 정보 자동 입력)
+		if(req.getParameter("id") != null) {
+			String id = (String)req.getParameter("id");
+			reqMemberInfo(req, id);
+		}
+	}
+	
+	// 예약 회원 정보 가져오기
+	public void reqMemberInfo(HttpServletRequest req, String id) {
+		
+		List<MemberDTO> memberInfo = new ArrayList<MemberDTO>();
+		ReservationDAO dao = ReservationDAO.getInstance();
+		memberInfo = dao.getMemberInfo(id);
+		req.setAttribute("memberInfo", memberInfo);
 	}
 }
