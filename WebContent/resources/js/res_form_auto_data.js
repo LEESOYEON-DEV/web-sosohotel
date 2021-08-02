@@ -1,7 +1,8 @@
 /**
- * 객실 목록의 예약 정보 자동 입력
+ * 실시간예약 페이지 자동 입력 기능
  */
 
+// 객실 목록의 예약 정보 자동 입력
 function autoData() {
 	
 	var checkIn = document.getElementById("checkIn");
