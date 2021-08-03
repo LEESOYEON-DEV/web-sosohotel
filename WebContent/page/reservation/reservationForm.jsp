@@ -8,7 +8,7 @@
 	String sessionId;
 	if(session.getAttribute("id") != null) sessionId = (String)session.getAttribute("id");
 	else sessionId = "guest";
-	List roomList = (List)request.getAttribute("roomList");
+	
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -56,11 +56,13 @@
     <div class="reservationStep2">
         <div class="roomSelectForm">
         <%
-        	for(int i=0; i<roomList.size(); i++) {
-        		RoomDTO room = (RoomDTO)roomList.get(i);
+        	if(request.getAttribute("roomList") != null) {
+	        	List roomList = (List)request.getAttribute("roomList");
+	        	for(int i=0; i<roomList.size(); i++) {
+	        		RoomDTO room = (RoomDTO)roomList.get(i);
         %>
             <div class="roomSelect">
-                <div><img src="http://placehold.it/150x150" alt="single room" width="150" height="150"></div>
+                <div><img src="http://placehold.it/150x150" width="150" height="150"></div>
                 <div class="roomInfo">
                     <table>
                         <tr><td colspan="2" class="roomTitle"><%=room.getName()%></td></tr>
@@ -81,7 +83,7 @@
                 <div id="selectBtn"><button value="<%=i%>" onclick="selectChk(this);">선택</button></div>
             </div>
         <%
-        	}
+        		}}
         %>            
         </div>
     </div>
@@ -129,14 +131,38 @@
                         <tr><th>어린이</th><td><input id="resChildCnt" type="text" readonly></td></tr>
                     </table>
                 </div>
+<%
+	String weekday = null, weekday_nights = null, weekend = null, weekend_nights = null, amount = null;
+	if(request.getAttribute("amount") != null) {
+		
+		if(request.getAttribute("weekday") != null) {
+			weekday = (String)request.getAttribute("weekday");
+			//weekday_nights = (String)request.getAttribute("weekday_nights");
+			weekday_nights ="55";
+		}
+		if(request.getAttribute("weekend") != null) {
+			weekend = (String)request.getAttribute("weekend");
+			//weekend_nights = (String)request.getAttribute("weekend_nights");
+			weekday_nights ="56";
+		}
+		amount = (String)request.getAttribute("amount");
+		
+	} else {
+		weekday = "";
+		weekday_nights = "";
+		weekend = "";
+		weekend_nights = "";
+		amount = "";
+	}
+%>
                 <div id="paymentInfo">
                     <div id="amountInfo">
                         <h3>결제금액</h3>
                         <table>
-                            <tr><td></td><td>70,000</td></tr>
-                            <tr><td></td><td>(1박)</td></tr>
+                            <tr><td></td><td>${weekday} × ${weekday_nights}박</td></tr>
+                            <tr><td></td><td>${weekend} × ${weekend_nights}박</td></tr>
                             <tr><td colspan="2"><hr></td></tr>
-                            <tr id="infoText"><td>결제금액</td><td>70,000원</td></tr>
+                            <tr id="infoText"><td>결제금액</td><td>${amount}원</td></tr>
                         </table>
                     </div>
                     <div id="methodSelect">
@@ -166,6 +192,16 @@
 			var i = e.value;
 			var roomName = document.getElementsByClassName("roomTitle")[i].innerHTML;
 			document.getElementById("resRmName").value = roomName;
+			
+			var checkIn = document.getElementById("checkIn").value;
+			var checkOut = document.getElementById("checkOut").value;
+			var room = document.getElementById("room").value;
+			var adult = document.getElementById("adult").value;
+			var child = document.getElementById("child").value;	
+			
+			location.href="../resController/resAmountForm.do?roomName=" + roomName + "&checkIn=" + checkIn + "&checkOut=" + checkOut + "&room=" + room + "&adult=" + adult + "&child=" + child;
+			autoData();
+			inputData();
 		}
     	
     	// 객실 정보 자동 입력
@@ -178,7 +214,6 @@
 			var adult = document.getElementById("adult");
 			var child = document.getElementById("child");
 			
-			document.getElementById("resCheckIn").value = checkIn.value;
 			document.getElementById("resCheckIn").value = checkIn.value;
 			document.getElementById("resCheckOut").value = checkOut.value;
 			document.getElementById("resNights").value = nights.innerHTML;

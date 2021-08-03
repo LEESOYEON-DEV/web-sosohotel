@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import mvc.database.DBConn;
 
@@ -42,11 +43,6 @@ public class ReservationDAO {
 				room.setType(rs.getString("rm_type"));
 				room.setName(rs.getString("rm_name"));
 				room.setBasicPeople(rs.getInt("basic_people"));
-				room.setAddPeople(rs.getInt("add_person"));
-				room.setWeekdayPrice(rs.getInt("price_weekday"));
-				room.setWeekendPrice(rs.getInt("price_weekend"));
-				room.setExtraCharge(rs.getInt("extra_charge"));
-				room.setNum(rs.getInt("rm_num"));
 				room.setWeekdayPrice_s(format.format(rs.getInt("price_weekday")));
 				room.setWeekendPrice_s(format.format(rs.getInt("price_weekend")));
 				roomList.add(room);
@@ -98,6 +94,51 @@ public class ReservationDAO {
 			
 		} catch(Exception e) {
 			System.out.println("getMemberInfo() error : " + e);
+			
+		} finally {
+			
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+				
+			} catch(Exception e) {
+				throw new RuntimeException(e.getMessage());
+			}
+		}
+		return null;
+	}
+
+	// 객실가 가져오기
+	public ArrayList<RoomDTO> getRoomCharge(String roomName) {
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String sql = "SELECT * FROM room WHERE rm_name=?";
+		ArrayList<RoomDTO> roomList = new ArrayList<RoomDTO>();
+		DecimalFormat format = new DecimalFormat("###,###");
+		
+		try {	
+			conn = DBConn.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, roomName);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				RoomDTO room = new RoomDTO();
+				room.setWeekdayPrice(rs.getInt("price_weekday"));
+				room.setWeekendPrice(rs.getInt("price_weekend"));
+				room.setWeekdayPrice_s(format.format(rs.getInt("price_weekday")));
+				room.setWeekendPrice_s(format.format(rs.getInt("price_weekend")));
+				roomList.add(room);
+			}
+			return roomList;
+			
+		} catch(Exception e) {
+			System.out.println("getRoomCharge() error : " + e);
 			
 		} finally {
 			

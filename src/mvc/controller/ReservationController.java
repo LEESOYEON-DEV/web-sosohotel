@@ -1,7 +1,9 @@
 package mvc.controller;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -33,7 +35,11 @@ public class ReservationController extends HttpServlet {
 		
 		// 실시간 예약 페이지 출력
 		if(command.equals("/resController/reservationForm.do")) {
-			reqRoomList(req); // 객실 목록 가져오기
+			reqRoomList(req); // 객실 목록 및 사용자 정보 가져오기
+			RequestDispatcher rd = req.getRequestDispatcher("../page/reservation/reservationForm.jsp");
+			rd.forward(req, resp);
+		} else if(command.equals("/resController/resAmountForm.do")) {
+			reqAmountForm(req); // 결제 금액 출력
 			RequestDispatcher rd = req.getRequestDispatcher("../page/reservation/reservationForm.jsp");
 			rd.forward(req, resp);
 		}
@@ -61,5 +67,45 @@ public class ReservationController extends HttpServlet {
 		ReservationDAO dao = ReservationDAO.getInstance();
 		memberInfo = dao.getMemberInfo(id);
 		req.setAttribute("memberInfo", memberInfo);
+	}
+	
+	// 결제 금액 출력
+	public void reqAmountForm(HttpServletRequest req) {
+		
+		int weekday=0, weekday_nights=0, weekend=0, weekend_nights=0, amount=0;
+		String weekday_s=null, weekend_s=null, amount_s=null;
+		
+		ReservationDAO dao = ReservationDAO.getInstance();
+		ArrayList<RoomDTO> dto = new ArrayList<RoomDTO>();
+	
+		if(req.getParameter("roomName") != null) {
+			
+			String roomName = (String)req.getParameter("roomName");
+			String checkIn = (String)req.getParameter("checkIn");
+			String checkOut = (String)req.getParameter("checkOut");
+			
+			dto = dao.getRoomCharge(roomName);
+			RoomDTO room = (RoomDTO)dto.get(0);
+			weekday = room.getWeekdayPrice();
+			weekend = room.getWeekendPrice();
+			weekday_s = room.getWeekdayPrice_s();
+			weekend_s = room.getWeekendPrice_s();
+			
+			weekday_nights = 1;
+			weekend_nights = 3;
+			
+			amount = (weekday*weekday_nights) + (weekend*weekend_nights);
+			
+			DecimalFormat format = new DecimalFormat("###,###");
+			amount_s = format.format(amount);
+			
+			req.setAttribute("weekday", weekday_s);
+			req.setAttribute("weekday_nights", weekday_nights);
+			req.setAttribute("weekend", weekend_s);
+			req.setAttribute("weekend_nights", weekend_nights);
+			req.setAttribute("amount", amount_s);
+			
+			reqRoomList(req);
+		}
 	}
 }
