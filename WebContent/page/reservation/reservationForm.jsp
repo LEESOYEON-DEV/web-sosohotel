@@ -110,71 +110,38 @@
 %>
     <div class="reservationStep3">
         <div class="infoCheckForm">
-            <form name="resFm" class="infoCheck" action="" method="post" enctype="UTF-8">
+            <form name="resFm" class="infoCheck" method="post" enctype="UTF-8">
                 <div class="customerInfo">
                     <h3>예약자정보</h3>
                     <table>
-                        <tr><th>예약자명</th><td><input id="cusName" type="text" value="<%=cusName%>"></td></tr>
-                        <tr><th>연락처</th><td><input id="cusTel" type="text" value="<%=cusTel%>"></td></tr>
-                        <tr><th>이메일</th><td><input id="cusEmail" type="email" value="<%=cusEmail%>"></td></tr>
+                        <tr><th>예약자명</th><td><input name="name" id="cusName" type="text" value="<%=cusName%>"></td></tr>
+                        <tr><th>연락처</th><td><input name="tel" id="cusTel" type="text" value="<%=cusTel%>"></td></tr>
+                        <tr><th>이메일</th><td><input name="email" id="cusEmail" type="email" value="<%=cusEmail%>"></td></tr>
                     </table>
                 </div>
                 <div class="resultInfo">
                     <h3>예약정보</h3>
                     <table>
-                        <tr><th>객실명</th><td><input id="resRmName" type="text" readonly></td></tr>
-                        <tr><th>체크인</th><td><input id="resCheckIn" type="text" readonly></td></tr>
-                        <tr><th>체크아웃</th><td><input id="resCheckOut" type="text" readonly></td></tr>
-                        <tr><th>숙박일수</th><td><input id="resNights" type="text" readonly></td></tr>
-                        <tr><th>객실수</th><td><input id="resRmCnt" type="text" readonly></td></tr>
-                        <tr><th>성인</th><td><input id="resAdultCnt" type="text" readonly></td></tr>
-                        <tr><th>어린이</th><td><input id="resChildCnt" type="text" readonly></td></tr>
+                        <tr><th>객실명</th><td><input name="roomName" id="resRmName" type="text" readonly></td></tr>
+                        <tr><th>체크인</th><td><input name="checkIn" id="resCheckIn" type="text" readonly></td></tr>
+                        <tr><th>체크아웃</th><td><input name="checkOut" id="resCheckOut" type="text" readonly></td></tr>
+                        <tr><th>숙박일수</th><td><input name="nights" id="resNights" type="text" readonly></td></tr>
+                        <tr><th>객실수</th><td><input name="roomCnt" id="resRmCnt" type="text" readonly></td></tr>
+                        <tr><th>성인</th><td><input name="adultCnt" id="resAdultCnt" type="text" readonly></td></tr>
+                        <tr><th>어린이</th><td><input name="childCnt" id="resChildCnt" type="text" readonly></td></tr>
                     </table>
                 </div>
-<%
-	String weekday = null, weekday_nights = null, weekend = null, weekend_nights = null, amount = null;
-	if(request.getAttribute("amount") != null) {
-		
-		if(request.getAttribute("weekday") != null) {
-			weekday = (String)request.getAttribute("weekday");
-			//weekday_nights = (String)request.getAttribute("weekday_nights");
-			weekday_nights ="55";
-		}
-		if(request.getAttribute("weekend") != null) {
-			weekend = (String)request.getAttribute("weekend");
-			//weekend_nights = (String)request.getAttribute("weekend_nights");
-			weekday_nights ="56";
-		}
-		amount = (String)request.getAttribute("amount");
-		
-	} else {
-		weekday = "";
-		weekday_nights = "";
-		weekend = "";
-		weekend_nights = "";
-		amount = "";
-	}
-%>
                 <div id="paymentInfo">
-                    <div id="amountInfo">
-                        <h3>결제금액</h3>
-                        <table>
-                            <tr><td></td><td>${weekday} × ${weekday_nights}박</td></tr>
-                            <tr><td></td><td>${weekend} × ${weekend_nights}박</td></tr>
-                            <tr><td colspan="2"><hr></td></tr>
-                            <tr id="infoText"><td>결제금액</td><td>${amount}원</td></tr>
-                        </table>
-                    </div>
                     <div id="methodSelect">
                         <h3>결제수단</h3>
                         <div id="methodCheck">
                             <div id="radioBox">
-                                <input name="method" value="credit" type="radio" style="vertical-align: -8px;"> 신용카드<br>
-                                <input name="method" value="cash" type="radio" style="vertical-align: -8px;"> 무통장입금<br>
-                                <input name="method" value="direct" type="radio" style="vertical-align: -8px;"> 현장결제<br>
+                                <input name="method" value="신용카드" type="radio" style="vertical-align: -8px;"> 신용카드<br>
+                                <input name="method" value="무통장입금" type="radio" style="vertical-align: -8px;"> 무통장입금<br>
+                                <input name="method" value="현장결제" type="radio" style="vertical-align: -8px;"> 현장결제<br>
                             </div>
                             <div id="btnBox">
-                                <button>결제</button>
+                                <button type="button" onclick="resInfoChk()">결제</button>
                             </div>
                         </div>
                     </div>
@@ -184,6 +151,38 @@
     </div>
 	<jsp:include page="../footer.jsp"/>
 	<script type="text/javascript">
+		// 예약 정보 확인
+		function resInfoChk() {
+			
+			if(!resFm.name.value) {
+				alert("예약자명을 입력해주세요.");
+				resFm.name.focus();
+				return;
+			}
+			if(!resFm.tel.value) {
+				alert("연락처를 입력해주세요.");
+				resFm.tel.focus();
+				return;
+			}
+			if(!resFm.email.value) {
+				alert("이메일을 입력해주세요.");
+				resFm.email.focus();
+				return;
+			}
+			if(!resFm.roomName.value) {
+				alert("객실을 선택해주세요.");
+				resFm.roomName.focus();
+				return;
+			}
+			if(!resFm.method.value) {
+				alert("결제수단을 선택해주세요.");
+				resFm.method.focus();
+				return;
+			}
+			
+			resFm.action = "../resController/resAmountForm.do";
+			resFm.submit();
+		}
     	// 예약 정보 자동 입력
     	function selectChk(e) {
     		
@@ -192,16 +191,6 @@
 			var i = e.value;
 			var roomName = document.getElementsByClassName("roomTitle")[i].innerHTML;
 			document.getElementById("resRmName").value = roomName;
-			
-			var checkIn = document.getElementById("checkIn").value;
-			var checkOut = document.getElementById("checkOut").value;
-			var room = document.getElementById("room").value;
-			var adult = document.getElementById("adult").value;
-			var child = document.getElementById("child").value;	
-			
-			location.href="../resController/resAmountForm.do?roomName=" + roomName + "&checkIn=" + checkIn + "&checkOut=" + checkOut + "&room=" + room + "&adult=" + adult + "&child=" + child;
-			autoData();
-			inputData();
 		}
     	
     	// 객실 정보 자동 입력
