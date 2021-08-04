@@ -114,7 +114,7 @@
                 <div class="customerInfo">
                     <h3>예약자정보</h3>
                     <table>
-                        <tr><th>이름</th><td><input id="cusName" type="text" value="<%=cusName%>"></td></tr>
+                        <tr><th>예약자명</th><td><input id="cusName" type="text" value="<%=cusName%>"></td></tr>
                         <tr><th>연락처</th><td><input id="cusTel" type="text" value="<%=cusTel%>"></td></tr>
                         <tr><th>이메일</th><td><input id="cusEmail" type="email" value="<%=cusEmail%>"></td></tr>
                     </table>
