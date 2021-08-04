@@ -1,0 +1,80 @@
+@charset "UTF-8";
+
+#fm {
+	width: 100%; 
+}
+
+#box {
+	width: 1140px; 
+	height: 500px; 
+	background: #dfe4ec; 
+	margin: 0 auto 130px auto; 
+}
+
+#room {
+	background: #ffffff; 
+	width: 270px; 
+	height: 380px; 
+	margin: 30px; 
+	padding: 30px; 
+	float: left; 
+}
+
+#room table {
+	border-spacing: 10px 15px; 
+	margin-top: 10px; 
+}
+
+#guest {
+	background: #ffffff; 
+	width: 270px; 
+	height: 380px; 
+	margin: 30px 30px 30px 0; 
+	padding: 30px; 
+	float: left; 
+}
+
+#guest table {
+	border-spacing: 10px 15px; 
+	margin-top: 10px; 
+}
+
+#pay {
+	background: #ffffff; 
+	width: 300px; 
+	height: 380px; 
+	margin: 30px 30px 30px 0; 
+	padding: 30px; 
+	float: left; 
+}
+
+#pay table {
+	border-spacing: 10px 15px; 
+	margin: 10px auto 0 auto; 
+	width: 280px; 
+}
+
+.right {
+	text-align: right; 
+}
+
+.right1 {
+	font-size: 12px; 
+	text-align: right; 
+}
+
+#result {
+	font-size: 20px; 
+	font-weight: bold; 
+}
+
+#submit {
+	width: 270px; 
+	font-size: 20px; 
+}
+
+#reset {
+	width: 270px; 
+	background: #95a4a6; 
+	font-size: 20px; 
+}
