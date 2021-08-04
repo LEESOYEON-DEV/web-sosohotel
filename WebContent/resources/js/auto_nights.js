@@ -19,5 +19,4 @@ function nights() {
     var result = (outObj.getTime() - inObj.getTime())/1000/60/60/24;
     var nights = document.getElementById("nights");
     nights.innerHTML = result + "박";
-
 }

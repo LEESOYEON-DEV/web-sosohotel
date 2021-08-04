@@ -70,6 +70,7 @@ public class ReservationController extends HttpServlet {
 	}
 	
 	// 결제 금액 출력
+	@SuppressWarnings("deprecation")
 	public void reqAmountForm(HttpServletRequest req) {
 		
 		int weekday=0, weekday_nights=0, weekend=0, weekend_nights=0, amount=0;
@@ -87,9 +88,19 @@ public class ReservationController extends HttpServlet {
 			String roomName = (String)req.getParameter("roomName");
 			String checkIn = (String)req.getParameter("checkIn");
 			String checkOut = (String)req.getParameter("checkOut");
-			String nights = (String)req.getParameter("nights");
-			StringBuffer sb = new StringBuffer(nights);
-			sb.delete(sb.length()-1, sb.length());
+			
+			String[] inArr = checkIn.split("-");
+			String[] outArr = checkOut.split("-");
+			int inYear = Integer.parseInt(inArr[0]);
+			int inMonth = Integer.parseInt(inArr[1])-1;
+			int inDay = Integer.parseInt(inArr[2]);
+			int outYear = Integer.parseInt(outArr[0]);
+			int outMonth = Integer.parseInt(outArr[1])-1;
+			int outDay = Integer.parseInt(outArr[2]);
+			Date inObj = new Date(inYear, inMonth, inDay);
+		    Date outObj = new Date(outYear, outMonth, outDay);
+		    long result = (outObj.getTime() - inObj.getTime())/1000/60/60/24;
+		    
 			String roomCnt = (String)req.getParameter("roomCnt");
 			String adultCnt = (String)req.getParameter("adultCnt");
 			String childCnt = (String)req.getParameter("childCnt");
@@ -103,7 +114,7 @@ public class ReservationController extends HttpServlet {
 			req.setAttribute("roomName", roomName);
 			req.setAttribute("checkIn", checkIn);
 			req.setAttribute("checkOut", checkOut);
-			req.setAttribute("nights", sb);
+			req.setAttribute("nights", result);
 			req.setAttribute("roomCnt", roomCnt);
 			req.setAttribute("adultCnt", adultCnt);
 			req.setAttribute("childCnt", childCnt);
