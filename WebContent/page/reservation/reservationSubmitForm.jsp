@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/common.css'/>">
     <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/reservationSubmit.css'/>">
-    <title>SOSO HOTEL</title>
+    <title>SOSO HOTEL | 실시간 예약</title>
 </head>
 <body>
 	<jsp:include page="../header.jsp"/>
