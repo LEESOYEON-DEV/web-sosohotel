@@ -52,7 +52,7 @@
                     <tr id="result"><td>결제금액</td><td class="right">230,000원</td></tr>
                     <tr><td></td><td class="right1">(VAT포함)</td></tr>
                     <tr></tr><tr></tr>
-                    <tr><td colspan="2"><button type="submit" id="submit">결제하기</button></td></tr>
+                    <tr><td colspan="2"><button type="submit" id="submit">예약하기</button></td></tr>
                     <tr><td colspan="2"><button type="reset" id="reset">취소하기</button></td></tr>
                 </table>
         	</div>
