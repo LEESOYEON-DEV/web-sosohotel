@@ -20,36 +20,36 @@
         	<div id="room">
         		<h3>객실정보</h3>
         		<table>
-        			<tr><th>객실명</th><td><input type="text" readonly></td></tr>
-        			<tr><th>체크인</th><td><input type="text" readonly></td></tr>
-        			<tr><th>체크아웃</th><td><input type="text" readonly></td></tr>
-        			<tr><th>숙박일수</th><td><input type="text" readonly></td></tr>
-        			<tr><th>객실수</th><td><input type="text" readonly></td></tr>
-        			<tr><th>성인</th><td><input type="text" readonly></td></tr>
-        			<tr><th>어린이</th><td><input type="text" readonly></td></tr>
+        			<tr><th>객실명</th><td><input value="${name}" type="text" readonly></td></tr>
+        			<tr><th>체크인</th><td><input value="${checkIn}" type="text" readonly></td></tr>
+        			<tr><th>체크아웃</th><td><input value="${checkOut}" type="text" readonly></td></tr>
+        			<tr><th>숙박일수</th><td><input value="${nights}" type="text" readonly></td></tr>
+        			<tr><th>객실수</th><td><input value="${roomCnt}" type="text" readonly></td></tr>
+        			<tr><th>성인</th><td><input value="${adultCnt}" type="text" readonly></td></tr>
+        			<tr><th>어린이</th><td><input value="${childCnt}" type="text" readonly></td></tr>
         		</table>
         	</div>
         	<div id="guest">
         		<h3>예약자정보</h3>
         		<table>
-        			<tr><th>예약자명</th><td><input type="text" readonly></td></tr>
-        			<tr><th>연락처</th><td><input type="text" readonly></td></tr>
-        			<tr><th>이메일</th><td><input type="text" readonly></td></tr>
+        			<tr><th>예약자명</th><td><input value="${name}" type="text" readonly></td></tr>
+        			<tr><th>연락처</th><td><input value="${tel}" type="text" readonly></td></tr>
+        			<tr><th>이메일</th><td><input value="${email}" type="text" readonly></td></tr>
         		</table>
         		<br><hr><br>
         		<h3>결제정보</h3>
         		<table>
-        			<tr><th>결제수단</th><td><input type="text" readonly></td></tr>
-        			<tr><th>결제금액</th><td><input type="text" readonly></td></tr>
+        			<tr><th>결제수단</th><td><input value="${method}" type="text" readonly></td></tr>
+        			<tr><th>결제금액</th><td><input value="${amount}" type="text" readonly></td></tr>
         		</table>
         	</div>
         	<div id="pay">
         		<h3>결제내역</h3>
         		<table style="">
-                    <tr><td></td><td class="right">70,000 × 1박</td></tr>
-                    <tr><td></td><td class="right">80,000 × 2박</td></tr>
+                    <tr><td></td><td class="right">${weekday} × ${weekday_nights}박</td></tr>
+                    <tr><td></td><td class="right">${weekend} × ${weekend_nights}박</td></tr>
                     <tr><td colspan="2"><hr></td></tr>
-                    <tr id="result"><td>결제금액</td><td class="right">230,000원</td></tr>
+                    <tr id="result"><td>결제금액</td><td class="right">${amount_s}원</td></tr>
                     <tr><td></td><td class="right1">(VAT포함)</td></tr>
                     <tr></tr><tr></tr>
                     <tr><td colspan="2"><button type="submit" id="submit">예약하기</button></td></tr>
