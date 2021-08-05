@@ -17,6 +17,25 @@ public class PaymentDAO {
 		return instance;
 	}
 	
+	// 결제상태 반환
+	public String getPayCondition(String method) {
+		
+		String resCon = null;
+		
+		switch(method) {
+		case "신용카드":
+			resCon = "결제완료";
+			break;
+		case "무통장입금":
+			resCon = "결제대기";
+			break;
+		case "현장결제":
+			resCon = "결제예정";
+			break;
+		}
+		return resCon;
+	}
+	
 	// 결제내역 저장 (payment 테이블에 추가)
 	public void insertPayment(PaymentDTO dto) {
 		
