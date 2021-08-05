@@ -1,6 +1,6 @@
 package mvc.model;
 
-public class PaymantDTO {
+public class PaymentDTO {
 	
 	private String payNum;		// 거래번호
 	private String resNum;		// 예약번호
