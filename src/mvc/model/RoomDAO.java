@@ -44,7 +44,6 @@ public class RoomDAO {
 			System.out.println("getRoomType() error : " + e);
 			
 		} finally {
-			
 			try {
 				if(rs != null) rs.close();
 				if(pstmt != null) pstmt.close();
@@ -83,7 +82,6 @@ public class RoomDAO {
 			System.out.println("getRoomCode() error : " + e);
 			
 		} finally {
-			
 			try {
 				if(rs != null) rs.close();
 				if(pstmt != null) pstmt.close();
