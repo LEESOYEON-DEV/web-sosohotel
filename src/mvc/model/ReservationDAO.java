@@ -155,19 +155,16 @@ public class ReservationDAO {
 	}
 
 	// 예약상태 반환
-	public String getResCondition(String method) {
+	public String getResCondition(String payCondition) {
 		
 		String resCon = null;
 		
-		switch(method) {
-		case "신용카드":
-			resCon = "결제완료";
+		switch(payCondition) {
+		case "결제완료": case "결제예정":
+			resCon = "예약완료";
 			break;
-		case "무통장입금":
-			resCon = "결제대기";
-			break;
-		case "현장결제":
-			resCon = "결제예정";
+		case "결제대기":
+			resCon = "예약대기";
 			break;
 		}
 		return resCon;
@@ -213,5 +210,57 @@ public class ReservationDAO {
 				throw new RuntimeException(e.getMessage());
 			}
 		}
+	}
+	
+	// 예약내역 반환
+	public ArrayList<ReservationDTO> getResInfo(String resNum) {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String sql = "SELECT * FROM reservation WHERE res_num=?";
+		ArrayList<ReservationDTO> resInfo = new ArrayList<ReservationDTO>();
+		
+		try {	
+			conn = DBConn.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, resNum);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ReservationDTO resDto = new ReservationDTO();
+				resDto.setNum(resNum);
+				resDto.setRoomType(rs.getString("rm_type"));
+				resDto.setUserId(rs.getString("user_id"));
+				resDto.setUserName(rs.getString("user_name"));
+				resDto.setUserTel(rs.getString("user_tel"));
+				resDto.setUserEmail(rs.getString("user_email"));
+				resDto.setCheckIn(rs.getString("chech_in"));
+				resDto.setCheckOut(rs.getString("check_out"));
+				resDto.setNights(rs.getInt("nights"));
+				resDto.setRoomCount(rs.getInt("rm_count"));
+				resDto.setAdult(rs.getInt("res_adult"));
+				resDto.setChild(rs.getInt("res_child"));
+				resDto.setResDate(rs.getString("res_date"));
+				resDto.setCondition(rs.getString("res_con"));
+				resInfo.add(resDto);
+			}
+			return resInfo;
+			
+		} catch(Exception e) {
+			System.out.println("getResInfo() error : " + e);
+			
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+				
+			} catch(Exception e) {
+				throw new RuntimeException(e.getMessage());
+			}
+		}
+		return null;
 	}
 }
