@@ -3,6 +3,7 @@ package mvc.controller;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -11,10 +12,17 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.websocket.Session;
 
 import mvc.model.MemberDTO;
+import mvc.model.PaymentDAO;
+import mvc.model.PaymentDTO;
 import mvc.model.ReservationDAO;
+import mvc.model.ReservationDTO;
+import mvc.model.RoomCounterDTO;
+import mvc.model.RoomDAO;
 import mvc.model.RoomDTO;
+import oracle.jrockit.jfr.tools.ConCatRepository;
 
 public class ReservationController extends HttpServlet {
 
@@ -38,9 +46,15 @@ public class ReservationController extends HttpServlet {
 			reqRoomList(req); // 객실 목록 및 사용자 정보 가져오기
 			RequestDispatcher rd = req.getRequestDispatcher("../page/reservation/reservationForm.jsp");
 			rd.forward(req, resp);
+		// 예약 내용 확인 및 진행 페이지 출력
 		} else if(command.equals("/resController/resAmountForm.do")) {
 			reqAmountForm(req); // 결제 금액 출력
 			RequestDispatcher rd = req.getRequestDispatcher("../page/reservation/reservationSubmitForm.jsp");
+			rd.forward(req, resp);
+		// 예약 완료 페이지 출력
+		} else if(command.equals("/resController/resResult.do")) {
+			reqReservation(req);
+			RequestDispatcher rd = req.getRequestDispatcher("../page/main.jsp");
 			rd.forward(req, resp);
 		}
 	}
@@ -143,5 +157,120 @@ public class ReservationController extends HttpServlet {
 			req.setAttribute("amount", amount);
 			req.setAttribute("amount_s", amount_s);
 		}
+	}
+
+	// 예약내역 저장
+	public void reqReservation(HttpServletRequest req) {
+		
+		ReservationDAO resDao = ReservationDAO.getInstance();
+		RoomDAO roomDao = RoomDAO.getInstance();
+		PaymentDAO payDao = PaymentDAO.getInstance();
+		
+		String id = (String)req.getParameter("id");
+		String roomName = (String)req.getParameter("roomName");
+		String roomType = roomDao.getRoomType(roomName);
+		int roomCount = Integer.parseInt(req.getParameter("roomCnt"));
+		String method = (String)req.getParameter("method");
+		String condition = resDao.getResCondition(method);
+		
+		String date = getStringNow();
+		String resNum = "RS"+getRandomCode();
+		String payNum = "PA"+getRandomCode();
+		
+		ReservationDTO resDto = new ReservationDTO();
+		resDto.setNum(resNum);
+		resDto.setRoomType(roomType);
+		resDto.setUserId(id);
+		resDto.setUserName(req.getParameter("name"));
+		resDto.setUserTel(req.getParameter("tel"));
+		resDto.setUserEmail(req.getParameter("email"));
+		resDto.setCheckIn(req.getParameter("checkIn"));
+		resDto.setCheckOut(req.getParameter("checkOut"));
+		resDto.setNights(Integer.parseInt(req.getParameter("nights")));
+		resDto.setRoomCount(roomCount);
+		resDto.setAdult(Integer.parseInt(req.getParameter("adultCnt")));
+		resDto.setChild(Integer.parseInt(req.getParameter("childCnt")));
+		resDto.setResDate(date);
+		resDto.setCondition(condition);
+		resDao.insertReservation(resDto);
+		
+		PaymentDTO payDto = new PaymentDTO();
+		payDto.setPayNum(payNum);
+		payDto.setResNum(resNum);
+		payDto.setDate(date);
+		payDto.setCondition(condition);
+		payDto.setMethod(method);
+		payDto.setAmount(Integer.parseInt(req.getParameter("amount")));
+		payDao.insertPayment(payDto);
+		
+		/*
+		RoomCounterDTO roomCntDto = new RoomCounterDTO();
+		roomCntDto.setCode(roomDao.getRoomCode(roomName)+getDateCode("yyyy-mm-dd")); 뒤에 날짜는 체크인 날짜랑 똑같이!
+		roomCntDto.setCheckIn(); // 체크인 날짜별로 다 필요
+		roomCntDto.setType(roomType);
+		roomCntDto.setCount(roomCount);
+		*/
+	}
+	
+	// 날짜 반환 (YYMMDD)
+	public String getDateCode() {
+		
+		String dateCode = null;
+		
+		Calendar now = Calendar.getInstance();
+		String year = (Integer.toString(now.get(Calendar.YEAR))).substring(2, 3);
+		String month = Integer.toString(now.get(Calendar.MONTH)+1);
+		String day = Integer.toString(now.get(Calendar.DAY_OF_MONTH));
+		
+		dateCode = year+month+day;
+		return dateCode;
+	}
+	public String getDateCode(String date) { // "yyyy-mm-dd"
+		
+		String dateCode = null;
+		
+		String year = date.substring(2, 3);
+		String month = date.substring(5, 6);
+		String day = date.substring(8, 9);
+		
+		dateCode = year+month+day;
+		return dateCode;
+	}
+	
+	// 날짜 및 랜덤숫자 반환 (YYMMDD + 00 + 0000)
+	public String getRandomCode() {
+		
+		String ranCode = null;
+		
+		Calendar now = Calendar.getInstance();
+		String year = (Integer.toString(now.get(Calendar.YEAR))).substring(2);
+		if(year.length() == 1) year = "0"+year;
+		String month = Integer.toString(now.get(Calendar.MONTH)+1);
+		if(month.length() == 1) month = "0"+month;
+		String day = Integer.toString(now.get(Calendar.DAY_OF_MONTH));
+		if(day.length() == 1) day = "0"+day;
+		
+		int num1 = (int)((Math.random()*99)+10);
+		int num2 = (int)((Math.random()*9999)+1000);
+		
+		ranCode = year+month+day+num1+num2;
+		return ranCode;
+	}
+	
+	// 현재일시 반환
+	public String getStringNow() {
+		
+		String date = null;
+		
+		Calendar now = Calendar.getInstance();
+		int year = now.get(Calendar.YEAR);
+		int month = now.get(Calendar.MONTH)+1;
+		int day = now.get(Calendar.DAY_OF_MONTH);
+		int hour = now.get(Calendar.HOUR_OF_DAY);
+		int minute = now.get(Calendar.MINUTE);
+		int second = now.get(Calendar.SECOND);
+		
+		date = year+"-"+month+"-"+day+" "+hour+":"+minute+":"+second;
+		return date;
 	}
 }
