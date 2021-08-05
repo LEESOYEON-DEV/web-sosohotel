@@ -6,9 +6,9 @@ public class ReservationDTO {
 	private String roomType;	// 객실타입
 	private String userId;		// 회원아이디
 	private String guestId;		// 비회원번호
-	private String user_name;	// 예약자명
-	private String user_tel;	// 연락처
-	private String user_email;	// 이메일
+	private String userName;	// 예약자명
+	private String userTel;		// 연락처
+	private String userEmail;	// 이메일
 	private String checkIn;		// 체크인
 	private String checkOut;	// 체크아웃
 	private int nights;			// 숙박일수
@@ -43,23 +43,23 @@ public class ReservationDTO {
 	public void setGuestId(String guestId) {
 		this.guestId = guestId;
 	}
-	public String getUser_name() {
-		return user_name;
+	public String getUserName() {
+		return userName;
 	}
-	public void setUser_name(String user_name) {
-		this.user_name = user_name;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
-	public String getUser_tel() {
-		return user_tel;
+	public String getUserTel() {
+		return userTel;
 	}
-	public void setUser_tel(String user_tel) {
-		this.user_tel = user_tel;
+	public void setUserTel(String userTel) {
+		this.userTel = userTel;
 	}
-	public String getUser_email() {
-		return user_email;
+	public String getUserEmail() {
+		return userEmail;
 	}
-	public void setUser_email(String user_email) {
-		this.user_email = user_email;
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
 	}
 	public String getCheckIn() {
 		return checkIn;
