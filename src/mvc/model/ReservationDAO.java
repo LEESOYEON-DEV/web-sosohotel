@@ -154,11 +154,6 @@ public class ReservationDAO {
 		return null;
 	}
 
-	// 예약내역 저장 (resevation 테이블에 추가)
-	public void insertReservation(ReservationDTO dto) {
-		
-	}
-
 	// 예약상태 반환
 	public String getResCondition(String method) {
 		
@@ -176,5 +171,47 @@ public class ReservationDAO {
 			break;
 		}
 		return resCon;
+	}
+	
+	// 예약내역 저장 (resevation 테이블에 추가)
+	public void insertReservation(ReservationDTO dto) {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		String sql = "INSERT INTO reservation(res_num, rm_type, user_id, user_name, user_tel, user_email, check_in, check_out, nights, rm_count, res_adult, res_child, res_date, res_con) " + 
+					 "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+		
+		try {
+			conn = DBConn.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, dto.getNum());
+			pstmt.setString(2, dto.getRoomType());
+			pstmt.setString(3, dto.getUserId());
+			pstmt.setString(4, dto.getUserName());
+			pstmt.setString(5, dto.getUserTel());
+			pstmt.setString(6, dto.getUserEmail());
+			pstmt.setString(7, dto.getCheckIn());
+			pstmt.setString(8, dto.getCheckOut());
+			pstmt.setInt(9, dto.getNights());
+			pstmt.setInt(10, dto.getRoomCount());
+			pstmt.setInt(11, dto.getAdult());
+			pstmt.setInt(12, dto.getChild());
+			pstmt.setString(13, dto.getResDate());
+			pstmt.setString(14, dto.getCondition());
+			pstmt.executeUpdate();			
+			
+		} catch(Exception e) {
+			System.out.println("insertReservation() error : " + e);
+			
+		} finally {
+			try {
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+				
+			} catch(Exception e) {
+				throw new RuntimeException(e.getMessage());
+			}
+		}
 	}
 }
