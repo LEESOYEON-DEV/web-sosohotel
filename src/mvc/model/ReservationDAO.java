@@ -153,4 +153,28 @@ public class ReservationDAO {
 		}
 		return null;
 	}
+
+	// 예약내역 저장 (resevation 테이블에 추가)
+	public void insertReservation(ReservationDTO dto) {
+		
+	}
+
+	// 예약상태 반환
+	public String getResCondition(String method) {
+		
+		String resCon = null;
+		
+		switch(method) {
+		case "신용카드":
+			resCon = "결제완료";
+			break;
+		case "무통장입금":
+			resCon = "결제대기";
+			break;
+		case "현장결제":
+			resCon = "결제예정";
+			break;
+		}
+		return resCon;
+	}
 }
