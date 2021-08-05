@@ -8,7 +8,6 @@
 	String sessionId;
 	if(session.getAttribute("id") != null) sessionId = (String)session.getAttribute("id");
 	else sessionId = "guest";
-	
 %>
 <!DOCTYPE html>
 <html lang="ko">

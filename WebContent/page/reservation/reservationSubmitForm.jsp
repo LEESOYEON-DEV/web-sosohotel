@@ -16,7 +16,12 @@
 	<div id="title">
         <h2>실시간 예약</h2><hr>
     </div>
-    <form name="fm" action="" method="post" enctype="UTF-8" id="fm" onsubmit="return resInfoChk()">
+    <%
+    	String id;
+	    if(session.getAttribute("id") == null) id = "guest";
+		else id = (String)session.getAttribute("id");
+	%>
+    <form name="fm" action="../resController/resResult.do?id=<%=id%>" method="post" enctype="UTF-8" id="fm" onsubmit="return resInfoChk()">
         <div id="box">
         	<div id="room">
         		<h3>객실정보</h3>
