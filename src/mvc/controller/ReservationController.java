@@ -301,7 +301,7 @@ public class ReservationController extends HttpServlet {
 		String dateCode = null;
 		
 		Calendar now = Calendar.getInstance();
-		String year = (Integer.toString(now.get(Calendar.YEAR))).substring(2, 3);
+		String year = (Integer.toString(now.get(Calendar.YEAR))).substring(2);
 		if(year.length() == 1) year = "0"+year;
 		String month = Integer.toString(now.get(Calendar.MONTH)+1);
 		if(month.length() == 1) month = "0"+month;
@@ -315,9 +315,9 @@ public class ReservationController extends HttpServlet {
 		
 		String dateCode = null;
 		
-		String year = date.substring(2, 3);
-		String month = date.substring(5, 6);
-		String day = date.substring(8, 9);
+		String year = date.substring(2, 4);
+		String month = date.substring(5, 7);
+		String day = date.substring(8, 10);
 		
 		dateCode = year+month+day;
 		return dateCode;
@@ -336,11 +336,8 @@ public class ReservationController extends HttpServlet {
 		String day = Integer.toString(now.get(Calendar.DAY_OF_MONTH));
 		if(day.length() == 1) day = "0"+day;
 		
-		int num1 = (int)((Math.random()*99)+10);
-		int num2 = (int)((Math.random()*9999)+1000);
-		
-		System.out.println(num1);
-		System.out.println(num2);
+		int num1 = (int)((Math.random()*90)+10);
+		int num2 = (int)((Math.random()*9000)+1000);
 		
 		ranCode = year+month+day+num1+num2;
 		return ranCode;
