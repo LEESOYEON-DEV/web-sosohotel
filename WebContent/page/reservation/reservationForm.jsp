@@ -21,7 +21,7 @@
     <script src="<c:url value='/resources/js/res_form_auto_data.js'/>" charset="UTF-8"></script>
 	<title>SOSO HOTEL | 실시간 예약</title>
 </head>
-<body onload="checkInOut(); nights();">
+<body onload="checkInOut(); nights(); autoData();">
 	<jsp:include page="../header.jsp"/>
     <div class="reservationStep1">
         <div id="title">
