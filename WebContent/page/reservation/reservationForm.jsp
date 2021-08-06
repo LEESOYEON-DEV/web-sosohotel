@@ -21,14 +21,13 @@
     <script src="<c:url value='/resources/js/res_form_auto_data.js'/>" charset="UTF-8"></script>
 	<title>SOSO HOTEL | 실시간 예약</title>
 </head>
-<body onload="checkInOut(); nights(); autoData();">
+<body onload="checkInOut(); nights();">
 	<jsp:include page="../header.jsp"/>
     <div class="reservationStep1">
         <div id="title">
             <h2>실시간 예약</h2><hr>
         </div>
         <div class="reservationBox">
-            <form name="fm" action="#" method="get" enctype="utf-8">
             <table>
                 <tr>
                     <th>체크인</th>
@@ -40,15 +39,14 @@
                     <th rowspan="2"><button id="searchBtn" type="submit" onclick="autoData();">검색</button></th>
                 </tr>
                 <tr>
-                    <th><input type="date" id="checkIn" onchange="dateCheck(); nights();"></th>
+                    <th><input type="date" id="checkIn" onchange="dateCheck(); nights(); autoData();"></th>
                     <th id="nights"></th>
-                    <th><input type="date" id="checkOut" onchange="dateCheck(); nights();"></th>
-                    <th><input id="room" type="number" min="1" max="1" value="1"></th>
-                    <th><input id="adult" type="number" min="1" max="2" value="1"></th>
-                    <th><input id="child" type="number" min="0" max="2" value="0"></th>
+                    <th><input type="date" id="checkOut" onchange="dateCheck(); nights(); autoData();"></th>
+                    <th><input id="room" type="number" min="1" max="1" value="1" onchange="autoData();"></th>
+                    <th><input id="adult" type="number" min="1" max="2" value="1" onchange="autoData();"></th>
+                    <th><input id="child" type="number" min="0" max="2" value="0" onchange="autoData();"></th>
                 </tr>
             </table>
-            </form>
         </div>
     </div>
 
