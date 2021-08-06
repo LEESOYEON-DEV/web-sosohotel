@@ -20,139 +20,6 @@ public class ReservationDAO {
 			instance = new ReservationDAO();
 		return instance;
 	}
-	
-	// 객실 정보 가져오기 (room 테이블의 레코드 가져오기)
-	public ArrayList<RoomDTO> getRoomList() {
-		
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		
-		String sql = "SELECT * FROM room";
-		ArrayList<RoomDTO> roomList = new ArrayList<RoomDTO>();
-		DecimalFormat format = new DecimalFormat("###,###");
-		
-		try {	
-			conn = DBConn.getConnection();
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-			
-			while(rs.next()) {
-				
-				RoomDTO room = new RoomDTO();
-				room.setType(rs.getString("rm_type"));
-				room.setName(rs.getString("rm_name"));
-				room.setBasicPeople(rs.getInt("basic_people"));
-				room.setWeekdayPrice_s(format.format(rs.getInt("price_weekday")));
-				room.setWeekendPrice_s(format.format(rs.getInt("price_weekend")));
-				roomList.add(room);
-			}
-			return roomList;
-			
-		} catch(Exception e) {
-			System.out.println("getRoomList() error : " + e);
-			
-		} finally {
-			
-			try {
-				if(rs != null) rs.close();
-				if(pstmt != null) pstmt.close();
-				if(conn != null) conn.close();
-				
-			} catch(Exception e) {
-				throw new RuntimeException(e.getMessage());
-			}
-		}
-		return null;
-	}
-
-	// 회원 정보 가져오기 (member 테이블의 레코드 가져오기)
-	public ArrayList<MemberDTO> getMemberInfo(String id) {
-		
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		
-		String sql = "SELECT * FROM member WHERE user_id=?";
-		ArrayList<MemberDTO> memberInfo = new ArrayList<MemberDTO>();
-		
-		try {	
-			conn = DBConn.getConnection();
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, id);
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				
-				MemberDTO member = new MemberDTO();
-				member.setName(rs.getString("user_name"));
-				member.setTel(rs.getString("user_tel"));
-				member.setEmail(rs.getString("user_email"));
-				memberInfo.add(member);
-			}
-			return memberInfo;
-			
-		} catch(Exception e) {
-			System.out.println("getMemberInfo() error : " + e);
-			
-		} finally {
-			
-			try {
-				if(rs != null) rs.close();
-				if(pstmt != null) pstmt.close();
-				if(conn != null) conn.close();
-				
-			} catch(Exception e) {
-				throw new RuntimeException(e.getMessage());
-			}
-		}
-		return null;
-	}
-
-	// 객실가 가져오기
-	public ArrayList<RoomDTO> getRoomCharge(String roomName) {
-
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		
-		String sql = "SELECT * FROM room WHERE rm_name=?";
-		ArrayList<RoomDTO> roomList = new ArrayList<RoomDTO>();
-		DecimalFormat format = new DecimalFormat("###,###");
-		
-		try {	
-			conn = DBConn.getConnection();
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, roomName);
-			rs = pstmt.executeQuery();
-			
-			while(rs.next()) {
-				
-				RoomDTO room = new RoomDTO();
-				room.setWeekdayPrice(rs.getInt("price_weekday"));
-				room.setWeekendPrice(rs.getInt("price_weekend"));
-				room.setWeekdayPrice_s(format.format(rs.getInt("price_weekday")));
-				room.setWeekendPrice_s(format.format(rs.getInt("price_weekend")));
-				roomList.add(room);
-			}
-			return roomList;
-			
-		} catch(Exception e) {
-			System.out.println("getRoomCharge() error : " + e);
-			
-		} finally {
-			
-			try {
-				if(rs != null) rs.close();
-				if(pstmt != null) pstmt.close();
-				if(conn != null) conn.close();
-				
-			} catch(Exception e) {
-				throw new RuntimeException(e.getMessage());
-			}
-		}
-		return null;
-	}
 
 	// 예약상태 반환
 	public String getResCondition(String payCondition) {
@@ -237,12 +104,15 @@ public class ReservationDAO {
 				ReservationDTO resDto = new ReservationDTO();
 				resDto.setNum(resNum);
 				resDto.setRoomType(rs.getString("rm_type"));
-				resDto.setUserId(rs.getString("user_id"));
+				if(rs.getString("user_id") != null)
+					resDto.setUserId(rs.getString("user_id"));
+				else
+					resDto.setUserId(rs.getString("guest_id"));
 				resDto.setUserName(rs.getString("user_name"));
 				resDto.setUserTel(rs.getString("user_tel"));
 				resDto.setUserEmail(rs.getString("user_email"));
-				resDto.setCheckIn(rs.getString("chech_in"));
-				resDto.setCheckOut(rs.getString("check_out"));
+				resDto.setCheckIn((rs.getString("check_in")).substring(0, 10));
+				resDto.setCheckOut((rs.getString("check_out")).substring(0, 10));
 				resDto.setNights(rs.getInt("nights"));
 				resDto.setRoomCount(rs.getInt("rm_count"));
 				resDto.setAdult(rs.getInt("res_adult"));

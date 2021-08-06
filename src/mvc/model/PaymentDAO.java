@@ -2,6 +2,8 @@ package mvc.model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import mvc.database.DBConn;
 
@@ -68,5 +70,45 @@ public class PaymentDAO {
 				throw new RuntimeException(e.getMessage());
 			}
 		}
+	}
+	
+	// 결제내역 반환
+	public ArrayList<PaymentDTO> getPayInfo(String resNum) {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String sql = "SELECT * FROM payment WHERE res_num=?";
+		ArrayList<PaymentDTO> payInfo = new ArrayList<PaymentDTO>();
+		
+		try {	
+			conn = DBConn.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, resNum);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				PaymentDTO payDto = new PaymentDTO();
+				payDto.setMethod(rs.getString("pay_method"));
+				payDto.setAmount(rs.getInt("pay_amount"));
+				payInfo.add(payDto);
+			}
+			return payInfo;
+			
+		} catch(Exception e) {
+			System.out.println("getPayInfo() error : " + e);
+			
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+				
+			} catch(Exception e) {
+				throw new RuntimeException(e.getMessage());
+			}
+		}
+		return null;
 	}
 }

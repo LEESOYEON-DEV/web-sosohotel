@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.websocket.Session;
 
+import mvc.model.MemberDAO;
 import mvc.model.MemberDTO;
 import mvc.model.PaymentDAO;
 import mvc.model.PaymentDTO;
@@ -69,7 +70,7 @@ public class ReservationController extends HttpServlet {
 	public void reqRoomList(HttpServletRequest req) {
 		
 		List<RoomDTO> roomList = new ArrayList<RoomDTO>();
-		ReservationDAO dao = ReservationDAO.getInstance();
+		RoomDAO dao = RoomDAO.getInstance();
 		roomList = dao.getRoomList();
 		req.setAttribute("roomList", roomList);
 		
@@ -84,7 +85,7 @@ public class ReservationController extends HttpServlet {
 	public void reqMemberInfo(HttpServletRequest req, String id) {
 		
 		List<MemberDTO> memberInfo = new ArrayList<MemberDTO>();
-		ReservationDAO dao = ReservationDAO.getInstance();
+		MemberDAO dao = MemberDAO.getInstance();
 		memberInfo = dao.getMemberInfo(id);
 		req.setAttribute("memberInfo", memberInfo);
 	}
@@ -96,7 +97,7 @@ public class ReservationController extends HttpServlet {
 		int weekday=0, weekday_nights=0, weekend=0, weekend_nights=0, amount=0;
 		String weekday_s=null, weekend_s=null, amount_s=null;
 		
-		ReservationDAO dao = ReservationDAO.getInstance();
+		RoomDAO dao = RoomDAO.getInstance();
 		ArrayList<RoomDTO> dto = new ArrayList<RoomDTO>();
 	
 		if(req.getParameter("roomName") != null) {
@@ -184,7 +185,6 @@ public class ReservationController extends HttpServlet {
 		
 		String date = getStringNow();
 		String resNum = "RS"+getRandomCode();
-		req.setAttribute("resNum", resNum);
 		String payNum = "PA"+getRandomCode();
 		
 		ReservationDTO resDto = new ReservationDTO();
@@ -220,19 +220,58 @@ public class ReservationController extends HttpServlet {
 		roomCntDto.setType(roomType);
 		roomCntDto.setCount(roomCount);
 		*/
+		
+		req.setAttribute("resNum", resNum);
 	}
 	
 	// 예약확인 페이지 출력
 	public void reqResResultPage(HttpServletRequest req) {
 		
-		String resNum = req.getParameter("resNum");
-		
+		String resNum = (String)req.getAttribute("resNum");
+		// 예약 정보
 		List<ReservationDTO> resInfo = new ArrayList<ReservationDTO>();
 		ReservationDAO resDao = ReservationDAO.getInstance();
 		resInfo = resDao.getResInfo(resNum);
 		req.setAttribute("resInfo", resInfo);
+		// 결제 정보
+		List<PaymentDTO> payInfo = new ArrayList<PaymentDTO>();
+		PaymentDAO payDao = PaymentDAO.getInstance();
+		payInfo = payDao.getPayInfo(resNum);
+		req.setAttribute("payInfo", payInfo);
+		// 결제 내역 표시
+		List<RoomDTO> roomInfo = new ArrayList<RoomDTO>();
+		RoomDAO roomDao = RoomDAO.getInstance();
+		
+		int weekday_nights=0, weekend_nights=0, amount=0;
+		String weekday_s=null, weekend_s=null, amount_s=null;
+		
+		String checkIn = resInfo.get(0).getCheckIn();
+		int nights = resInfo.get(0).getNights();
+		String roomType = resInfo.get(0).getRoomType();		// 객실타입
+		String roomName = roomDao.getRoomName(roomType);	// 객실명
+		
+		// 객실가
+		roomInfo = roomDao.getRoomCharge(roomName);
+		RoomDTO room = (RoomDTO)roomInfo.get(0);
+		
+		weekday_s = room.getWeekdayPrice_s();
+		weekend_s = room.getWeekendPrice_s();
+		weekday_nights = getWeekdays(checkIn, nights);
+		weekend_nights = getWeekends(checkIn, nights);
+		
+		DecimalFormat format = new DecimalFormat("###,###");
+		amount = payInfo.get(0).getAmount();
+		amount_s = format.format(amount);
+		
+		req.setAttribute("weekday", weekday_s);
+		req.setAttribute("weekday_nights", weekday_nights);
+		req.setAttribute("weekend", weekend_s);
+		req.setAttribute("weekend_nights", weekend_nights);
+		req.setAttribute("amount_s", amount_s);
 	}
 	
+	
+	// 평일(일~목) 숙박일수 반환
 	// 평일(일~목) 숙박일수 반환
 	public int getWeekdays(String checkIn, long nights) {
 		
@@ -258,6 +297,7 @@ public class ReservationController extends HttpServlet {
 		return weekdays;
 	}
 	
+	// 주말(금~토) 숙박일수 반환
 	// 주말(금~토) 숙박일수 반환
 	public int getWeekends(String checkIn, long nights) {
 		
