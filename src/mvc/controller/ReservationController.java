@@ -2,6 +2,7 @@ package mvc.controller;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -51,10 +52,15 @@ public class ReservationController extends HttpServlet {
 			reqAmountForm(req); // 결제 금액 출력
 			RequestDispatcher rd = req.getRequestDispatcher("../page/reservation/reservationSubmitForm.jsp");
 			rd.forward(req, resp);
+		// 예약 내역 저장
+		} else if(command.equals("/resController/resSave.do")) {
+			reqReservation(req);
+			RequestDispatcher rd = req.getRequestDispatcher("/resController/resResult.do");
+			rd.forward(req, resp);
 		// 예약 완료 페이지 출력
 		} else if(command.equals("/resController/resResult.do")) {
-			reqReservation(req);
-			RequestDispatcher rd = req.getRequestDispatcher("../page/main.jsp");
+			reqResResultPage(req);
+			RequestDispatcher rd = req.getRequestDispatcher("../page/reservation/reservationCheckPage.jsp");
 			rd.forward(req, resp);
 		}
 	}
@@ -113,7 +119,7 @@ public class ReservationController extends HttpServlet {
 			int outDay = Integer.parseInt(outArr[2]);
 			Date inObj = new Date(inYear, inMonth, inDay);
 		    Date outObj = new Date(outYear, outMonth, outDay);
-		    long result = (outObj.getTime() - inObj.getTime())/1000/60/60/24;
+		    long nights = (outObj.getTime() - inObj.getTime())/1000/60/60/24;
 		    
 			String roomCnt = (String)req.getParameter("roomCnt");
 			String adultCnt = (String)req.getParameter("adultCnt");
@@ -128,7 +134,7 @@ public class ReservationController extends HttpServlet {
 			req.setAttribute("roomName", roomName);
 			req.setAttribute("checkIn", checkIn);
 			req.setAttribute("checkOut", checkOut);
-			req.setAttribute("nights", result);
+			req.setAttribute("nights", nights);
 			req.setAttribute("roomCnt", roomCnt);
 			req.setAttribute("adultCnt", adultCnt);
 			req.setAttribute("childCnt", childCnt);
@@ -142,8 +148,8 @@ public class ReservationController extends HttpServlet {
 			weekday_s = room.getWeekdayPrice_s();
 			weekend_s = room.getWeekendPrice_s();
 			
-			weekday_nights = 1;
-			weekend_nights = 3;
+			weekday_nights = getWeekdays(checkIn, nights);
+			weekend_nights = getWeekends(checkIn, nights);
 			
 			amount = (weekday*weekday_nights) + (weekend*weekend_nights);
 			
@@ -165,16 +171,20 @@ public class ReservationController extends HttpServlet {
 		ReservationDAO resDao = ReservationDAO.getInstance();
 		RoomDAO roomDao = RoomDAO.getInstance();
 		PaymentDAO payDao = PaymentDAO.getInstance();
-		
+
 		String id = (String)req.getParameter("id");
+		if(id.equals("guest")) id = getGuestId(); // 비회원의 경우 비회원번호 생성
 		String roomName = (String)req.getParameter("roomName");
 		String roomType = roomDao.getRoomType(roomName);
 		int roomCount = Integer.parseInt(req.getParameter("roomCnt"));
 		String method = (String)req.getParameter("method");
-		String condition = resDao.getResCondition(method);
+		String payCondition = payDao.getPayCondition(method);
+		String resCondition = resDao.getResCondition(payCondition);
+		String checkIn = (String)req.getParameter("checkIn");
 		
 		String date = getStringNow();
 		String resNum = "RS"+getRandomCode();
+		req.setAttribute("resNum", resNum);
 		String payNum = "PA"+getRandomCode();
 		
 		ReservationDTO resDto = new ReservationDTO();
@@ -184,32 +194,105 @@ public class ReservationController extends HttpServlet {
 		resDto.setUserName(req.getParameter("name"));
 		resDto.setUserTel(req.getParameter("tel"));
 		resDto.setUserEmail(req.getParameter("email"));
-		resDto.setCheckIn(req.getParameter("checkIn"));
+		resDto.setCheckIn(checkIn);
 		resDto.setCheckOut(req.getParameter("checkOut"));
 		resDto.setNights(Integer.parseInt(req.getParameter("nights")));
 		resDto.setRoomCount(roomCount);
 		resDto.setAdult(Integer.parseInt(req.getParameter("adultCnt")));
 		resDto.setChild(Integer.parseInt(req.getParameter("childCnt")));
 		resDto.setResDate(date);
-		resDto.setCondition(condition);
+		resDto.setCondition(resCondition);
 		resDao.insertReservation(resDto);
 		
 		PaymentDTO payDto = new PaymentDTO();
 		payDto.setPayNum(payNum);
 		payDto.setResNum(resNum);
 		payDto.setDate(date);
-		payDto.setCondition(condition);
+		payDto.setCondition(payCondition);
 		payDto.setMethod(method);
 		payDto.setAmount(Integer.parseInt(req.getParameter("amount")));
 		payDao.insertPayment(payDto);
-		
+
 		/*
 		RoomCounterDTO roomCntDto = new RoomCounterDTO();
-		roomCntDto.setCode(roomDao.getRoomCode(roomName)+getDateCode("yyyy-mm-dd")); 뒤에 날짜는 체크인 날짜랑 똑같이!
-		roomCntDto.setCheckIn(); // 체크인 날짜별로 다 필요
+		roomCntDto.setCode(roomDao.getRoomCode(roomName)+getDateCode(checkIn));
+		roomCntDto.setCheckIn(checkIn); // 체크인 날짜별로 다 필요
 		roomCntDto.setType(roomType);
 		roomCntDto.setCount(roomCount);
 		*/
+	}
+	
+	// 예약확인 페이지 출력
+	public void reqResResultPage(HttpServletRequest req) {
+		
+		String resNum = req.getParameter("resNum");
+		
+		List<ReservationDTO> resInfo = new ArrayList<ReservationDTO>();
+		ReservationDAO resDao = ReservationDAO.getInstance();
+		resInfo = resDao.getResInfo(resNum);
+		req.setAttribute("resInfo", resInfo);
+	}
+	
+	// 평일(일~목) 숙박일수 반환
+	public int getWeekdays(String checkIn, long nights) {
+		
+		int weekdays = 0;
+		
+		String[] inArr = new String[3];
+		inArr = checkIn.split("-");
+		int inYear = Integer.parseInt(inArr[0]);
+		int inMonth = Integer.parseInt(inArr[1])-1;
+		int inDay = Integer.parseInt(inArr[2]);
+		
+		Calendar date = Calendar.getInstance();
+		date.set(inYear, inMonth, inDay);
+		int start = date.get(Calendar.DAY_OF_WEEK);
+		
+		long nightsCnt = nights;
+		
+		for(int i=0; i<nightsCnt; i++) {
+			if(start <= 5) weekdays++;
+			if(start == 7) start = 1;
+			else start++;
+		}
+		return weekdays;
+	}
+	
+	// 주말(금~토) 숙박일수 반환
+	public int getWeekends(String checkIn, long nights) {
+		
+		int weekends = 0;
+		
+		String[] inArr = new String[3];
+		inArr = checkIn.split("-");
+		int inYear = Integer.parseInt(inArr[0]);
+		int inMonth = Integer.parseInt(inArr[1])-1;
+		int inDay = Integer.parseInt(inArr[2]);
+		
+		Calendar date = Calendar.getInstance();
+		date.set(inYear, inMonth, inDay);
+		int start = date.get(Calendar.DAY_OF_WEEK);
+		
+		long nightsCnt = nights;
+		
+		for(int i=0; i<nightsCnt; i++) {
+			if(start >= 6) weekends++;
+			if(start == 7) start = 1;
+			else start++;
+		}
+		return weekends;
+	}
+	
+	// 비회원번호 반환 (guest_YYMMDD0000)
+	public String getGuestId() {
+		
+		String guestId = null;
+		
+		String dateCode = getDateCode();
+		int randomNumber = (int)((Math.random()*9999)+1000);
+		
+		guestId = "guest_"+dateCode+randomNumber;
+		return guestId;
 	}
 	
 	// 날짜 반환 (YYMMDD)
@@ -219,8 +302,11 @@ public class ReservationController extends HttpServlet {
 		
 		Calendar now = Calendar.getInstance();
 		String year = (Integer.toString(now.get(Calendar.YEAR))).substring(2, 3);
+		if(year.length() == 1) year = "0"+year;
 		String month = Integer.toString(now.get(Calendar.MONTH)+1);
+		if(month.length() == 1) month = "0"+month;
 		String day = Integer.toString(now.get(Calendar.DAY_OF_MONTH));
+		if(day.length() == 1) day = "0"+day;
 		
 		dateCode = year+month+day;
 		return dateCode;
@@ -252,6 +338,9 @@ public class ReservationController extends HttpServlet {
 		
 		int num1 = (int)((Math.random()*99)+10);
 		int num2 = (int)((Math.random()*9999)+1000);
+		
+		System.out.println(num1);
+		System.out.println(num2);
 		
 		ranCode = year+month+day+num1+num2;
 		return ranCode;
