@@ -1,9 +1,9 @@
-<%@ page import="mvc.model.PaymentDTO"%>
-<%@ page import="mvc.model.ReservationDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.sql.*"%>
 <%@ page import="java.util.*"%>
+<%@ page import="mvc.model.PaymentDTO"%>
+<%@ page import="mvc.model.ReservationDTO"%>
 <%
 	List resInfo = (List)request.getAttribute("resInfo");
 	ReservationDTO res = (ReservationDTO)resInfo.get(0);
@@ -70,8 +70,8 @@
                     <tr id="result"><td>결제금액</td><td class="right">${amount_s}원</td></tr>
                     <tr><td></td><td class="right1">(VAT포함)</td></tr>
                     <tr></tr><tr></tr>
-                    <tr><td colspan="2"><button type="submit" id="submit">확인</button></td></tr>
-                    <tr><td colspan="2"><button type="reset" id="reset" onclick="history.go(-1)">예약취소</button></td></tr>
+                    <tr><td colspan="2"><button type="reset" id="submit" onclick="location.href='../page/main.jsp'">확인</button></td></tr>
+                    <tr><td colspan="2"><button type="submit" id="reset">예약취소</button></td></tr>
                 </table>
         	</div>
         </div>
