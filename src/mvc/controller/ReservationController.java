@@ -233,6 +233,7 @@ public class ReservationController extends HttpServlet {
 			resNum = (String)req.getAttribute("resNum");
 		else if(req.getParameter("resNum") != null)
 			resNum = (String)req.getParameter("resNum");
+		req.setAttribute("resNum", resNum);
 		// 예약 정보
 		List<ReservationDTO> resInfo = new ArrayList<ReservationDTO>();
 		ReservationDAO resDao = ReservationDAO.getInstance();

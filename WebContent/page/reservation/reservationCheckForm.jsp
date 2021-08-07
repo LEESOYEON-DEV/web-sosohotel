@@ -18,11 +18,11 @@
         <div id="resChkFm">
             <!-- 예약번호로 조회 -->
             <div id="chk1"><br><br>
-            <form action="" method="post" enctype="UTF-8">
+            <form action="/../web_sosohotel/resController/resResult.do" method="post" enctype="UTF-8">
             	<table>
             		<tr>
             			<th>예약번호</th>
-            			<td><input type="text"></td>
+            			<td><input name="resNum" type="text"></td>
             		</tr>
             		<tr>
             			<th colspan="2"><button type="submit">조회</button></th>
@@ -36,8 +36,8 @@
             <div id="chk2">
             <form action="" method="post" enctype="UTF-8">
             	<table>
-            		<tr><th>예약자명</th><td><input type="text"></td></tr>
-            		<tr><th>연락처</th><td><input type="text"></td></tr>
+            		<tr><th>예약자명</th><td><input type="text" readonly></td></tr>
+            		<tr><th>연락처</th><td><input type="text" readonly></td></tr>
             		<tr><th colspan="2"><button type="submit">조회</button></th></tr>
             	</table>
             </form>
