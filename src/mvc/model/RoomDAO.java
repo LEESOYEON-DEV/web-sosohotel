@@ -222,4 +222,51 @@ public class RoomDAO {
 		}
 		return null;
 	}
+	
+	// 예약번호로 객실코드 반환
+	public String getRoomCodeInResNum(String resNum) {
+		
+		String roomCode = null;
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String sql = "SELECT rm_type FROM reservation WHERE res_num=?";
+		
+		try {	
+			conn = DBConn.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, resNum);
+			rs = pstmt.executeQuery();
+			
+			String roomType = null;
+			if(rs.next())
+				roomType = rs.getString("rm_type");
+			
+			sql = "SELECT rm_code FROM room WHERE rm_type=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, roomType);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next())
+				roomCode = rs.getString("rm_code");
+			
+			return roomCode;
+			
+		} catch(Exception e) {
+			System.out.println("getRoomCodeInResNum() error : " + e);
+			
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+				
+			} catch(Exception e) {
+				throw new RuntimeException(e.getMessage());
+			}
+		}
+		return null;
+	}
 }

@@ -19,7 +19,7 @@ public class PaymentDAO {
 		return instance;
 	}
 	
-	// 결제상태 반환
+	// 결제상태 반환 (예약 진행 시)
 	public String getPayCondition(String method) {
 		
 		String resCon = null;
@@ -36,6 +36,82 @@ public class PaymentDAO {
 			break;
 		}
 		return resCon;
+	}
+	
+	// 결제상태 반환 (예약 취소 시)
+	public String getPayConDelete(String resNum) {
+		
+		String resCon = null;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String sql = "SELECT pay_con FROM payment WHERE res_num=?";
+		
+		try {	
+			conn = DBConn.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, resNum);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next())
+				resCon = rs.getString("pay_con");
+			
+			return resCon;
+			
+		} catch(Exception e) {
+			System.out.println("getPayConDelete() error : " + e);
+			
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+				
+			} catch(Exception e) {
+				throw new RuntimeException(e.getMessage());
+			}
+		}
+		return null;
+	}
+	
+	// 결제금액 반환 (예약 취소 시)
+	public int getPayAmount(String resNum) {
+		
+		int resCon = 0;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String sql = "SELECT pay_amount FROM payment WHERE res_num=?";
+		
+		try {	
+			conn = DBConn.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, resNum);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next())
+				resCon = rs.getInt("pay_amount");
+			
+			return resCon;
+			
+		} catch(Exception e) {
+			System.out.println("getPayAmount() error : " + e);
+			
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+				
+			} catch(Exception e) {
+				throw new RuntimeException(e.getMessage());
+			}
+		}
+		return 0;
 	}
 	
 	// 결제내역 저장 (payment 테이블에 추가)

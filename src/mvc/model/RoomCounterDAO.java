@@ -21,7 +21,7 @@ public class RoomCounterDAO {
 		return instance;
 	}
 
-	// 예약내역 저장 (room_counter 테이블에 반영하여 일일 예약 객실 수 파악)
+	// 예약내역 저장
 	public void insertRoomCounter(RoomCounterDTO dto) {
 		
 		Connection conn = null;
@@ -56,6 +56,55 @@ public class RoomCounterDAO {
 			
 		} catch(Exception e) {
 			System.out.println("insertRoomCounter() error : " + e);
+			
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+				
+			} catch(Exception e) {
+				throw new RuntimeException(e.getMessage());
+			}
+		}
+	}
+	
+	// 예약취소 반영
+	public void deleteRoomCounter(String roomCode, int resRoomCnt) {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String sql = "SELECT rm_count FROM room_counter WHERE rm_code=?";
+		
+		try {
+			conn = DBConn.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, roomCode);
+			rs = pstmt.executeQuery();
+			
+			int count = 0;
+			if(rs.next()) {
+				count = rs.getInt("rm_count") - resRoomCnt;
+				
+				if(count > 0) {
+					sql = "UPDATE room_counter SET rm_count=? WHERE rm_code=?";
+					pstmt = conn.prepareStatement(sql);
+					pstmt.setInt(1, count);
+					pstmt.setString(2, roomCode);
+					pstmt.executeUpdate();
+					
+				} else if(count == 0) {
+					sql = "DELETE FROM room_counter WHERE rm_code=?";
+					pstmt = conn.prepareStatement(sql);
+					pstmt.setString(1, roomCode);
+					pstmt.executeUpdate();
+				}
+			}
+			
+		} catch(Exception e) {
+			System.out.println("deleteRoomCounter() error : " + e);
 			
 		} finally {
 			try {

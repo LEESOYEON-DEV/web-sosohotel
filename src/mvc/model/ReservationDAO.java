@@ -5,8 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
+import mvc.controller.ReservationController;
 import mvc.database.DBConn;
 
 public class ReservationDAO {
@@ -139,5 +141,155 @@ public class ReservationDAO {
 			}
 		}
 		return null;
+	}
+	
+	// 예약취소 시 예약내역 변경 (예약상태, 취소일시)
+	public void updateResCondition(String payCon, String resNum) {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		String sql = null;
+		if(payCon.equals("결제대기") || payCon.equals("결제예정"))
+			sql = "UPDATE reservation SET res_con='취소완료', can_date=? WHERE res_num=?";
+		else if(payCon.equals("결제완료"))
+			sql = "UPDATE reservation SET res_con='취소신청', can_date=? WHERE res_num=?";
+		
+		CommonDAO comDao = CommonDAO.getInstance();
+		String now = comDao.getStringNow();
+		
+		try {
+			conn = DBConn.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, now);
+			pstmt.setString(2, resNum);
+			pstmt.executeUpdate();
+			
+		} catch(Exception e) {
+			System.out.println("updateResCondition() error : " + e);
+			
+		} finally {
+			try {
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+				
+			} catch(Exception e) {
+				throw new RuntimeException(e.getMessage());
+			}
+		}
+	}
+	
+	// 체크인 날짜 반환
+	public String getCheckIn(String resNum) {
+		
+		String checkIn = null;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String sql = "SELECT check_in FROM reservation WHERE res_num=?";
+		
+		try {	
+			conn = DBConn.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, resNum);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next())
+				checkIn = rs.getString("check_in");
+			
+			return checkIn;
+			
+		} catch(Exception e) {
+			System.out.println("getCheckIn() error : " + e);
+			
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+				
+			} catch(Exception e) {
+				throw new RuntimeException(e.getMessage());
+			}
+		}
+		return null;
+	}
+	
+	// 체크아웃 날짜 반환
+	public String getCheckOut(String resNum) {
+		
+		String checkOut = null;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String sql = "SELECT check_out FROM reservation WHERE res_num=?";
+		
+		try {	
+			conn = DBConn.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, resNum);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next())
+				checkOut = rs.getString("check_out");
+			
+			return checkOut;
+			
+		} catch(Exception e) {
+			System.out.println("getCheckOut() error : " + e);
+			
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+				
+			} catch(Exception e) {
+				throw new RuntimeException(e.getMessage());
+			}
+		}
+		return null;
+	}
+	
+	// 예약객실수 반환
+	public int getResRoomCnt(String resNum) {
+		
+		int resRoomCnt = 0;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String sql = "SELECT rm_count FROM reservation WHERE res_num=?";
+		
+		try {	
+			conn = DBConn.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, resNum);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next())
+				resRoomCnt = rs.getInt("rm_count");
+			
+			return resRoomCnt;
+			
+		} catch(Exception e) {
+			System.out.println("getResRoomCnt() error : " + e);
+			
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+				
+			} catch(Exception e) {
+				throw new RuntimeException(e.getMessage());
+			}
+		}
+		return 0;
 	}
 }

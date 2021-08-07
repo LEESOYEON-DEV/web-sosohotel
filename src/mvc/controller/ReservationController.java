@@ -15,10 +15,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.websocket.Session;
 
+import mvc.model.CommonDAO;
 import mvc.model.MemberDAO;
 import mvc.model.MemberDTO;
 import mvc.model.PaymentDAO;
 import mvc.model.PaymentDTO;
+import mvc.model.RefundDAO;
 import mvc.model.ReservationDAO;
 import mvc.model.ReservationDTO;
 import mvc.model.RoomCounterDAO;
@@ -63,6 +65,11 @@ public class ReservationController extends HttpServlet {
 		} else if(command.equals("/resController/resResult.do")) {
 			reqResResultPage(req);
 			RequestDispatcher rd = req.getRequestDispatcher("../page/reservation/reservationCheckPage.jsp");
+			rd.forward(req, resp);
+		// 예약 내역 삭제 (예약 취소)
+		} else if(command.equals("/resController/resDeleteAction.do")) {
+			reqResDelete(req);
+			RequestDispatcher rd = req.getRequestDispatcher("../page/main.jsp");
 			rd.forward(req, resp);
 		}
 	}
@@ -167,12 +174,13 @@ public class ReservationController extends HttpServlet {
 		}
 	}
 
-	// 예약내역 저장
+	// 예약 내역 저장
 	public void reqReservation(HttpServletRequest req) {
 		
 		ReservationDAO resDao = ReservationDAO.getInstance();
 		RoomDAO roomDao = RoomDAO.getInstance();
 		PaymentDAO payDao = PaymentDAO.getInstance();
+		CommonDAO comDao = CommonDAO.getInstance();
 
 		String id = (String)req.getParameter("id");
 		if(id.equals("guest")) id = getGuestId(); // 비회원의 경우 비회원번호 생성
@@ -184,9 +192,9 @@ public class ReservationController extends HttpServlet {
 		String resCondition = resDao.getResCondition(payCondition);
 		String checkIn = (String)req.getParameter("checkIn");
 		
-		String date = getStringNow();
-		String resNum = "RS"+getRandomCode();
-		String payNum = "PA"+getRandomCode();
+		String date = comDao.getStringNow();
+		String resNum = "RS"+comDao.getRandomCode();
+		String payNum = "PA"+comDao.getRandomCode();
 		
 		ReservationDTO resDto = new ReservationDTO();
 		resDto.setNum(resNum);
@@ -215,7 +223,7 @@ public class ReservationController extends HttpServlet {
 		payDao.insertPayment(payDto);
 
 		RoomCounterDTO roomCntDto = new RoomCounterDTO();
-		roomCntDto.setCode(roomDao.getRoomCode(roomName)+getDateCode(checkIn));
+		roomCntDto.setCode(roomDao.getRoomCode(roomName)+comDao.getDateCode(checkIn));
 		roomCntDto.setCheckIn(checkIn); // 체크인 날짜별로 다 필요
 		roomCntDto.setType(roomType);
 		roomCntDto.setCount(roomCount);
@@ -225,7 +233,7 @@ public class ReservationController extends HttpServlet {
 		req.setAttribute("resNum", resNum);
 	}
 	
-	// 예약확인 페이지 출력
+	// 예약 확인 페이지 출력
 	public void reqResResultPage(HttpServletRequest req) {
 		
 		String resNum = null;
@@ -275,7 +283,40 @@ public class ReservationController extends HttpServlet {
 		req.setAttribute("weekend_nights", weekend_nights);
 		req.setAttribute("amount_s", amount_s);
 	}
-
+	
+	// 예약 내역 삭제
+	public void reqResDelete(HttpServletRequest req) {
+		
+		String resNum = (String)req.getParameter("resNum");
+		
+		// payment : 예약번호로 결제상태(결제완료, 결제대기, 결제예정), 결제금액 조회
+		// 1. 결제상태 = 결제대기, 결제예정
+		//    refund : 거래번호, 환불일시 생성하여 입력 (거래번호, 예약번호, 환불일시, 환불금액) ok
+		//    reservation : 예약상태를 '취소완료'로 변경, 취소일시는 현재 시각으로 입력 ok
+		//    room_counter : 예약된 객실 수만큼 감소 (예약객실수가 0이면 데이터 삭제) ok
+		// 2. 결제상태 = 결제완료 : reservation의 예약상태를 '취소신청'으로 변경, 취소일시는 현재 시각으로 입력 (추후 관리자 페이지에서 승인, 진행될 때마다 취소일시 수정) ok
+		
+		PaymentDAO payDao = PaymentDAO.getInstance();
+		String payCon = payDao.getPayConDelete(resNum);
+		
+		ReservationDAO resDao = ReservationDAO.getInstance();
+		resDao.updateResCondition(payCon, resNum);
+		
+		if(payCon.equals("결제대기") || payCon.equals("결제예정")) {
+			RefundDAO refDao = RefundDAO.getInstance();
+			refDao.insertRefund(resNum);
+			
+			RoomDAO roomDao = RoomDAO.getInstance();
+			CommonDAO comDao = CommonDAO.getInstance();
+			String roomCode = roomDao.getRoomCodeInResNum(resNum)+comDao.getDateCode(resDao.getCheckIn(resNum));
+			int resRoomCnt = resDao.getResRoomCnt(resNum);
+			RoomCounterDAO roomCntDao = RoomCounterDAO.getInstance();
+			roomCntDao.deleteRoomCounter(roomCode, resRoomCnt);
+			
+		} else if(payCon.equals("결제완료")) {
+			
+		}
+	}
 	
 	// 평일(일~목) 숙박일수 반환
 	public int getWeekdays(String checkIn, long nights) {
@@ -332,75 +373,11 @@ public class ReservationController extends HttpServlet {
 		
 		String guestId = null;
 		
-		String dateCode = getDateCode();
+		CommonDAO comDao = CommonDAO.getInstance();
+		String dateCode = comDao.getDateCode();
 		int randomNumber = (int)((Math.random()*9999)+1000);
 		
 		guestId = "guest_"+dateCode+randomNumber;
 		return guestId;
-	}
-	
-	// 날짜 반환 (YYMMDD)
-	public String getDateCode() {
-		
-		String dateCode = null;
-		
-		Calendar now = Calendar.getInstance();
-		String year = (Integer.toString(now.get(Calendar.YEAR))).substring(2);
-		if(year.length() == 1) year = "0"+year;
-		String month = Integer.toString(now.get(Calendar.MONTH)+1);
-		if(month.length() == 1) month = "0"+month;
-		String day = Integer.toString(now.get(Calendar.DAY_OF_MONTH));
-		if(day.length() == 1) day = "0"+day;
-		
-		dateCode = year+month+day;
-		return dateCode;
-	}
-	public String getDateCode(String date) { // "yyyy-mm-dd"
-		
-		String dateCode = null;
-		
-		String year = date.substring(2, 4);
-		String month = date.substring(5, 7);
-		String day = date.substring(8, 10);
-		
-		dateCode = year+month+day;
-		return dateCode;
-	}
-	
-	// 날짜 및 랜덤숫자 반환 (YYMMDD + 00 + 0000)
-	public String getRandomCode() {
-		
-		String ranCode = null;
-		
-		Calendar now = Calendar.getInstance();
-		String year = (Integer.toString(now.get(Calendar.YEAR))).substring(2);
-		if(year.length() == 1) year = "0"+year;
-		String month = Integer.toString(now.get(Calendar.MONTH)+1);
-		if(month.length() == 1) month = "0"+month;
-		String day = Integer.toString(now.get(Calendar.DAY_OF_MONTH));
-		if(day.length() == 1) day = "0"+day;
-		
-		int num1 = (int)((Math.random()*90)+10);
-		int num2 = (int)((Math.random()*9000)+1000);
-		
-		ranCode = year+month+day+num1+num2;
-		return ranCode;
-	}
-	
-	// 현재일시 반환
-	public String getStringNow() {
-		
-		String date = null;
-		
-		Calendar now = Calendar.getInstance();
-		int year = now.get(Calendar.YEAR);
-		int month = now.get(Calendar.MONTH)+1;
-		int day = now.get(Calendar.DAY_OF_MONTH);
-		int hour = now.get(Calendar.HOUR_OF_DAY);
-		int minute = now.get(Calendar.MINUTE);
-		int second = now.get(Calendar.SECOND);
-		
-		date = year+"-"+month+"-"+day+" "+hour+":"+minute+":"+second;
-		return date;
 	}
 }
