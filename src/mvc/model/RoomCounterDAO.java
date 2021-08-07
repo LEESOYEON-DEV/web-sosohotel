@@ -37,14 +37,14 @@ public class RoomCounterDAO {
 			rs = pstmt.executeQuery();
 			
 			int count = 0;
-			if(rs.next()) {
+			if(rs.next()) { // 날짜, 객실이 일치하는 데이터가 있을 경우 기존 데이터의 예약객실수 증가
 				count = rs.getInt("rm_count") + dto.getCount();
 				sql = "UPDATE room_counter SET rm_count=? WHERE rm_code=?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, count);
 				pstmt.setString(2, dto.getCode());
 				pstmt.executeUpdate();
-			} else {
+			} else { // 날짜, 객실이 일치하는 데이터가 없을 경우 새 데이터 입력
 				sql = "INSERT INTO room_counter(rm_code, check_in, rm_type, rm_count) VALUES(?, ?, ?, ?)";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, dto.getCode());
