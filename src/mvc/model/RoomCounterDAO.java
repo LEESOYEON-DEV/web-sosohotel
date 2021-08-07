@@ -34,6 +34,7 @@ public class RoomCounterDAO {
 			conn = DBConn.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, dto.getCode());
+			rs = pstmt.executeQuery();
 			
 			int count = 0;
 			if(rs.next()) {
