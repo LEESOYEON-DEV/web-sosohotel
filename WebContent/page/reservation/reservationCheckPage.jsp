@@ -1,5 +1,5 @@
-<%@page import="mvc.model.PaymentDTO"%>
-<%@page import="mvc.model.ReservationDTO"%>
+<%@ page import="mvc.model.PaymentDTO"%>
+<%@ page import="mvc.model.ReservationDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.sql.*"%>
@@ -17,7 +17,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/common.css'/>">
     <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/reservationSubmit.css'/>">
-    <script src="<c:url value='/resources/js/res_submit_check.js'/>" charset="UTF-8"></script>
+    <script src="<c:url value='/resources/js/res_cancel_check.js'/>" charset="UTF-8"></script>
     <title>SOSO HOTEL | 예약확인</title>
 </head>
 <body>
@@ -25,15 +25,15 @@
 	<div id="title">
         <h2>예약확인</h2><hr>
     </div>
-    <div style="width: 100%; ">
-    	<div style="background: yellow; width: 1080px; height: 150px; background: #dfe4ec; margin: 0 auto 20px auto; padding: 30px;">
-    		<div style="background: #ffffff; width: 1080px; height: 50px; text-align: center; padding: 50px 0;">
+    <div id="infoBox">
+    	<div id="infoBoxChild">
+    		<div id="info">
 		    	<h2>예약이 완료되었습니다.</h2>
 		    	( 예약번호 : ${resNum} )
 	    	</div>
     	</div>
     </div>
-    <form name="fm" action="" method="post" enctype="UTF-8" id="fm" onsubmit="return resInfoChk()">
+    <div id="fm">
         <div id="box">
         	<div id="room">
         		<h3>객실정보</h3>
@@ -70,12 +70,12 @@
                     <tr id="result"><td>결제금액</td><td class="right">${amount_s}원</td></tr>
                     <tr><td></td><td class="right1">(VAT포함)</td></tr>
                     <tr></tr><tr></tr>
-                    <tr><td colspan="2"><button type="reset" id="reset" onclick="<c:url value='./main.jsp'/>">확인</button></td></tr>
-                    <tr><td colspan="2"><button type="submit" id="submit">예약취소</button></td></tr>
+                    <tr><td colspan="2"><button type="submit" id="submit">확인</button></td></tr>
+                    <tr><td colspan="2"><button type="reset" id="reset" onclick="history.go(-1)">예약취소</button></td></tr>
                 </table>
         	</div>
         </div>
-    </form>
+    </div>
 	<jsp:include page="../footer.jsp"/>
 </body>
 </html>

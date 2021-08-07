@@ -21,6 +21,7 @@ import mvc.model.PaymentDAO;
 import mvc.model.PaymentDTO;
 import mvc.model.ReservationDAO;
 import mvc.model.ReservationDTO;
+import mvc.model.RoomCounterDAO;
 import mvc.model.RoomCounterDTO;
 import mvc.model.RoomDAO;
 import mvc.model.RoomDTO;
@@ -81,7 +82,7 @@ public class ReservationController extends HttpServlet {
 		}
 	}
 	
-	// 예약 회원 정보 가져오기
+	// 회원 정보 가져오기
 	public void reqMemberInfo(HttpServletRequest req, String id) {
 		
 		List<MemberDTO> memberInfo = new ArrayList<MemberDTO>();
@@ -213,13 +214,13 @@ public class ReservationController extends HttpServlet {
 		payDto.setAmount(Integer.parseInt(req.getParameter("amount")));
 		payDao.insertPayment(payDto);
 
-		/*
 		RoomCounterDTO roomCntDto = new RoomCounterDTO();
 		roomCntDto.setCode(roomDao.getRoomCode(roomName)+getDateCode(checkIn));
 		roomCntDto.setCheckIn(checkIn); // 체크인 날짜별로 다 필요
 		roomCntDto.setType(roomType);
 		roomCntDto.setCount(roomCount);
-		*/
+		RoomCounterDAO roomCntDao = RoomCounterDAO.getInstance();
+		roomCntDao.insertRoomCounter(roomCntDto);
 		
 		req.setAttribute("resNum", resNum);
 	}
@@ -227,7 +228,11 @@ public class ReservationController extends HttpServlet {
 	// 예약확인 페이지 출력
 	public void reqResResultPage(HttpServletRequest req) {
 		
-		String resNum = (String)req.getAttribute("resNum");
+		String resNum = null;
+		if(req.getAttribute("resNum") != null)
+			resNum = (String)req.getAttribute("resNum");
+		else if(req.getParameter("resNum") != null)
+			resNum = (String)req.getParameter("resNum");
 		// 예약 정보
 		List<ReservationDTO> resInfo = new ArrayList<ReservationDTO>();
 		ReservationDAO resDao = ReservationDAO.getInstance();
@@ -269,9 +274,8 @@ public class ReservationController extends HttpServlet {
 		req.setAttribute("weekend_nights", weekend_nights);
 		req.setAttribute("amount_s", amount_s);
 	}
+
 	
-	
-	// 평일(일~목) 숙박일수 반환
 	// 평일(일~목) 숙박일수 반환
 	public int getWeekdays(String checkIn, long nights) {
 		
@@ -296,8 +300,7 @@ public class ReservationController extends HttpServlet {
 		}
 		return weekdays;
 	}
-	
-	// 주말(금~토) 숙박일수 반환
+
 	// 주말(금~토) 숙박일수 반환
 	public int getWeekends(String checkIn, long nights) {
 		

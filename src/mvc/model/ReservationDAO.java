@@ -44,11 +44,13 @@ public class ReservationDAO {
 		PreparedStatement pstmt = null;
 		
 		String sql = "INSERT INTO reservation(res_num, rm_type, user_id, user_name, user_tel, user_email, check_in, check_out, nights, rm_count, res_adult, res_child, res_date, res_con) " + 
-					 "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+					 "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
-		if(dto.getUserId().substring(0, 6).equals("guest_")) {
-			sql = "INSERT INTO reservation(res_num, rm_type, guest_id, user_name, user_tel, user_email, check_in, check_out, nights, rm_count, res_adult, res_child, res_date, res_con) " + 
-					 "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+		if(dto.getUserId().length() > 6) {
+			if(dto.getUserId().substring(0, 6).equals("guest_")) {
+				sql = "INSERT INTO reservation(res_num, rm_type, guest_id, user_name, user_tel, user_email, check_in, check_out, nights, rm_count, res_adult, res_child, res_date, res_con) " + 
+						 "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			}
 		}
 		
 		try {

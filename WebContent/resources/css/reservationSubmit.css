@@ -1,7 +1,24 @@
 @charset "UTF-8";
 
-#fm {
+#infoBox, #fm {
 	width: 100%; 
+}
+
+#infoBoxChild {
+	background: yellow; 
+	width: 1080px; 
+	height: 150px; 
+	background: #dfe4ec; 
+	margin: 0 auto 20px auto; 
+	padding: 30px; 
+}
+
+#info {
+	background: #ffffff; 
+	width: 1080px; 
+	height: 50px; 
+	text-align: center; 
+	padding: 50px 0; 
 }
 
 #box {
